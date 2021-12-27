@@ -1,0 +1,51 @@
+{% extends 'modelo-ifpr.html' %}
+
+{% load static %}
+
+{% block conteudo %}
+<h3>Lista de terrenos</h3>
+
+<a href="{% url 'cadastrar-terreno' %}" class="btn btn-primary btn-sm">Adicionar terreno</a>
+
+<hr>
+<div class="table responsive">
+<table class="table table-striped">
+    <tr>
+        <th>Inscrição</th>
+        <th>Proprietário</th>
+        <th>Logradouro</th>
+        <th>Bairro</th>
+        <th>Lote</th>
+        <th>Quadra</th>
+        <th>Área</th>
+        <th>Opções</th>
+
+    </tr>
+    {% for terreno in object_list %}
+    <tr>
+        <td>{{ terreno.inscricao }}</td>
+        <td>{{ terreno.proprietario }}</td>
+        <td>{{ terreno.logradouro_terreno.logradouro }}</td>
+        <td>{{ terreno.logradouro_terreno.bairro.bairro }}</td>
+        <td>{{ terreno.lote }}</td>
+        <td>{{ terreno.quadra }}</td>
+        <td>{{ terreno.area }}</td>
+        <td>
+            <a href="{% url 'editar-terreno' terreno.pk %}" class="btn btn-warning btn-sm" title="Editar">
+            Editar
+            </a>
+            <a href="{% url 'deletar-terreno' terreno.pk %}" class="btn btn-danger btn-sm" title="Excluir">
+            Excluir
+            </a>
+        </td>
+    </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">Nenhum campo registrado.</td>
+        </tr>
+    {% endfor %}
+
+</table>
+
+</div>
+{% endblock %}

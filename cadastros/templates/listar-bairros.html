@@ -1,0 +1,39 @@
+{% extends 'modelo-ifpr.html' %}
+
+{% load static %}
+
+{% block conteudo %}
+<h3>Lista de bairros</h3>
+<a href="{% url 'cadastrar-bairro' %}" class="btn btn-primary btn-sm">Adicionar bairro</a>
+<hr>
+<div class="table responsive">
+<table class="table table-striped">
+    <tr>
+        <th>Bairro</th>
+        <th>Cidade</th>
+        <th>Opções</th>
+
+    </tr>
+    {% for bairro in object_list %}
+    <tr>
+        <td>{{ bairro.bairro }}</td>
+        <td>{{ bairro.cidade.nome_cidade }}</td>
+        <td>
+            <a href="{% url 'editar-bairro' bairro.pk %}" class="btn btn-warning btn-sm" title="Editar">
+            Editar
+            </a>
+            <a href="{% url 'deletar-bairro' bairro.pk %}" class="btn btn-danger btn-sm" title="Excluir">
+            Excluir
+            </a>
+        </td>
+    </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">Nenhum campo registrado.</td>
+        </tr>
+    {% endfor %}
+
+</table>
+
+</div>
+{% endblock %}
