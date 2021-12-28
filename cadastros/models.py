@@ -10,6 +10,8 @@ class Estado (models.Model):
     #Anotação padrão para informar que é string
     def __str__(self):
         return "{} - {}".format(self.sigla_estado, self.nome_estado)
+    class Meta:
+        ordering = ['nome_estado']
 
 
 class Cidade (models.Model):

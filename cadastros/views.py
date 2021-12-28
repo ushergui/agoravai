@@ -213,6 +213,21 @@ class EstadoList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     model = Estado
     template_name = 'listar-estados.html'
+    paginate_by = 10
+    ordering = ['nome_estado']
+
+    def get_queryset(self):
+
+        txt_nome = self.request.GET.get('nome')
+
+        if txt_nome:
+            estados = Estado.objects.filter(nome_estado__icontains=txt_nome)
+        else:
+            estados = Estado.objects.all()
+
+        return estados
+
+
 
 class CidadeList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
