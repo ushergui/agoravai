@@ -1,0 +1,54 @@
+{% extends 'modelo-ifpr.html' %}
+
+{% load static %}
+
+{% block conteudo %}
+<h3>Lista de protocolos</h3>
+
+<a href="{% url 'cadastrar-protocolo' %}" class="btn btn-primary btn-sm">Adicionar protocolo</a>
+
+<hr>
+
+<table class="table table-striped table-hover table-condensed">
+    <tr>
+        <th>Protocolo</th>
+        <th>Solicitante</th>
+        <th>Logradouro</th>
+        <th>Descricao</th>
+        <th>Ouvidoria</th>
+        <th>Status</th>
+        <th>Entrada</th>
+        <th>Encerramento</th>
+        <th>Opções</th>
+
+    </tr>
+    {% for protocolo in object_list %}
+    <tr>
+        <td>{{ protocolo.protocolo }}</td>
+        <td>{{ protocolo.solicitante_protocolo }}</td>
+        <td>{{ protocolo.logradouro }}</td>
+        <td>{{ protocolo.descricao_protocolo }}</td>
+        <td>{{ protocolo.ouvidoria }}</td>
+        <td>{{ protocolo.status_protocolo }}</td>
+        <td>{{ protocolo.entrada_protocolo|date:"d/m/Y" }}</td>
+        <td>{{ protocolo.encerramento_protocolo|date:"d/m/Y" }}</td>
+
+
+        <td>
+            <a href="{% url 'editar-protocolo' protocolo.pk %}" class="btn btn-warning btn-sm" title="Editar">
+            Editar
+            </a>
+            <a href="{% url 'deletar-protocolo' protocolo.pk %}" class="btn btn-danger btn-sm" title="Excluir">
+            Excluir
+            </a>
+        </td>
+    </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">Nenhum campo registrado.</td>
+        </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

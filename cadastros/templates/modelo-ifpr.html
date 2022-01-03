@@ -90,16 +90,14 @@
                                 <a class="dropdown-item" href="{% url 'cadastrar-logradouro' %}">Logradouros</a>
                                 <a class="dropdown-item" href="{% url 'cadastrar-proprietario' %}">Proprietários</a>
                                 <a class="dropdown-item" href="{% url 'cadastrar-terreno' %}">Terrenos</a>
-                                <a class="dropdown-item" href="{% url 'cadastrar-produtividade' %}">Produvidade</a>
-                                <a class="dropdown-item" >Inspeções</a>
-                                <a class="dropdown-item">Infrações</a>
+                                <a class="dropdown-item" href="{% url 'cadastrar-protocolo' %}">Protocolos</a>
+                                <a class="dropdown-item" href="{% url 'cadastrar-fiscal' %}">Fiscais</a>
+                                <a class="dropdown-item" href="{% url 'cadastrar-inspecao' %}">Inspeções</a>
+                                <a class="dropdown-item" href="{% url 'cadastrar-infracao' %}">Infrações</a>
 
 
                             </div>
                         </li>
-                        {% endif %}
-
-                                                {% if request.user.is_authenticated %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink"
                                 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -114,13 +112,30 @@
                                 <a class="dropdown-item" href="{% url 'listar-logradouros' %}">Logradouros</a>
                                 <a class="dropdown-item" href="{% url 'listar-proprietarios' %}">Proprietários</a>
                                 <a class="dropdown-item" href="{% url 'listar-terrenos' %}">Terrenos</a>
-                                <a class="dropdown-item" href="{% url 'listar-produtividade' %}">Produtividade</a>
-                                <a class="dropdown-item" >Inspeções</a>
-                                <a class="dropdown-item">Infrações</a>
+                                <a class="dropdown-item" href="{% url 'listar-protocolos' %}">Protocolos</a>
+                                <a class="dropdown-item" href="{% url 'listar-fiscais' %}">Fiscais</a>
+                                <a class="dropdown-item" href="{% url 'listar-inspecoes' %}">Inspeções</a>
+                                <a class="dropdown-item" href="{% url 'listar-infracoes' %}">Infrações</a>
 
 
                             </div>
                         </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink"
+                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                                Pesquisas
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                                <a class="dropdown-item" href="{% url 'listar-terrenos' %}">Terrenos</a>
+
+
+
+                            </div>
+                        </li>
+
                         {% endif %}
 
                         <li class="nav-item ">
@@ -184,7 +199,7 @@
 
 
         <!-- Bloco de conteúdo -->
-        <div class="container py-5">
+        <div class="container-fluid py-5 ">
             {% block conteudo %}
             <h3>Página inicial</h3>
             {% endblock %}

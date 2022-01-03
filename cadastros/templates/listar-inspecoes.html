@@ -1,0 +1,62 @@
+{% extends 'modelo-ifpr.html' %}
+
+{% load static %}
+
+{% block conteudo %}
+<h3>Lista de inspeções</h3>
+
+<a href="{% url 'cadastrar-inspecao' %}" class="btn btn-primary btn-sm">Adicionar inspecao</a>
+
+<hr>
+
+<table class="table table-striped table-hover table-condensed">
+    <tr>
+        <th>Protocolo</th>
+        <th>Data da inspeção</th>
+        <th>Horário</th>
+        <th>Relatório</th>
+        <th>Fiscal</th>
+        <th>Tem mato?</th>
+        <th>Tem entulho?</th>
+        <th>Terreno</th>
+        <th>Relatório</th>
+
+        <th>Opções</th>
+
+    </tr>
+    {% for inspecao in object_list %}
+    <tr>
+        <td>{{ inspecao.protocolo }}</td>
+        <td>{{ inspecao.data_inspecao1|date:"d/m/Y" }}</td>
+        <td>{{ inspecao.horario_inspecao1 }}</td>
+
+        <td>{{ inspecao.data_relatorio1|date:"d/m/Y" }}</td>
+        <td>{{ inspecao.fiscal }}</td>
+        <td>{{ inspecao.mato }}</td>
+        <td>{{ inspecao.entulho }}</td>
+        <td>{{ inspecao.terreno }}</td>
+        {% if inspecao.mato == "X" and inspecao.entulho == "X" %}
+
+        <td><a href="{% url 'gerar_relatorio' pk=inspecao.pk %}">
+          Relatório
+        </a></td>
+
+        {% endif %}
+        <td>
+            <a href="{% url 'editar-inspecao' inspecao.pk %}" class="btn btn-warning btn-sm" title="Editar">
+            Editar
+            </a>
+            <a href="{% url 'deletar-inspecao' inspecao.pk %}" class="btn btn-danger btn-sm" title="Excluir">
+            Excluir
+            </a>
+        </td>
+    </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">Nenhum campo registrado.</td>
+        </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

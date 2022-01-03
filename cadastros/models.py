@@ -8,10 +8,16 @@ class Estado (models.Model):
     nome_estado=models.CharField(max_length=25, verbose_name="Estado")
     sigla_estado=models.CharField(max_length=2, verbose_name="Sigla do Estado")
     #Anotação padrão para informar que é string
+
     def __str__(self):
         return "{} - {}".format(self.sigla_estado, self.nome_estado)
     class Meta:
         ordering = ['nome_estado']
+
+    def save(self, *args, **kwargs):
+        self.nome_estado = self.nome_estado.upper()
+        self.sigla_estado = self.sigla_estado.upper()
+        super(Estado, self).save(*args, **kwargs)
 
 
 class Cidade (models.Model):
@@ -21,11 +27,21 @@ class Cidade (models.Model):
     def __str__(self):
         return "{} - {}".format(self.nome_cidade, self.estado)
 
+    def save(self, *args, **kwargs):
+        self.nome_cidade = self.nome_cidade.upper()
+        super(Cidade, self).save(*args, **kwargs)
+
 class Bairro (models.Model):
     bairro=models.CharField(max_length=70, verbose_name="Bairro")
     cidade=models.ForeignKey(Cidade, on_delete=models.PROTECT)
+
     def __str__(self):
         return "{} - {}".format(self.bairro, self.cidade)
+
+    def save(self, *args, **kwargs):
+        self.bairro = self.bairro.upper()
+        super(Bairro, self).save(*args, **kwargs)
+
 
 class Logradouro (models.Model):
     logradouro=models.CharField(max_length=80, verbose_name="Logradouro")
@@ -33,6 +49,9 @@ class Logradouro (models.Model):
     cep = models.CharField(max_length=13, verbose_name="CEP")
     def __str__(self):
         return "{} - {} - {}".format(self.logradouro, self.bairro, self.cep)
+    def save(self, *args, **kwargs):
+        self.logradouro = self.logradouro.upper()
+        super(Logradouro, self).save(*args, **kwargs)
 
 class Proprietario(models.Model):
     nome_proprietario = models.CharField(max_length=55)
@@ -41,6 +60,12 @@ class Proprietario(models.Model):
     complemento_proprietario=models.CharField(max_length=40, verbose_name="Complemento", null=True, blank=True)
     def __str__(self):
         return self.nome_proprietario
+
+    def save(self, *args, **kwargs):
+        self.nome_proprietario = self.nome_proprietario.upper()
+        self.numero_proprietario = self.numero_proprietario.upper()
+        self.complemento_proprietario = self.complemento_proprietario.upper()
+        super(Proprietario, self).save(*args, **kwargs)
 
     @property
     def complemento(self):
@@ -61,13 +86,156 @@ class Terreno(models.Model):
     numero_correspondencia = models.CharField(max_length=20, verbose_name="Número")
     complemento_correspondencia = models.CharField(max_length=40, verbose_name="Complemento")
 
+    def save(self, *args, **kwargs):
+        self.numero_terreno = self.numero_terreno.upper()
+        self.complemento_terreno = self.complemento_terreno.upper()
+        self.lote = self.lote.upper()
+        self.quadra = self.quadra.upper()
+        self.numero_correspondencia = self.numero_correspondencia.upper()
+        self.complemento_correspondencia = self.complemento_correspondencia.upper()
+        super(Terreno, self).save(*args, **kwargs)
+
     def __str__(self):
         return "{} - {}, {}".format(self.inscricao, self.proprietario, self.area)
 
-class Produtividade(models.Model):
-    descricao = models.CharField(max_length=280, null=False, verbose_name="Descrição")
-    usuario = models.ForeignKey(User, on_delete=models.PROTECT)
-    pdf_teste = models.FileField(upload_to='pdf/')
-    # posso usar este models.ForeignKey(User) para saber quem alterou alguma coisa ou criou
+    #class Produtividade(models.Model):
+        #descricao = models.CharField(max_length=280, null=False, verbose_name="Descrição")
+       # usuario = models.ForeignKey(User, on_delete=models.PROTECT)
+       # pdf_teste = models.FileField(upload_to='pdf/')
+
+class Protocolo(models.Model):
+    protocolo = models.CharField(max_length=12, null=False)
+    SOLICITANTE_CHOICES = (
+        ("PESSOA FÍSICA", "PESSOA FÍSICA"),
+        ("CORPO DE BOMBEIROS", "CORPO DE BOMBEIROS"),
+        ("MINISTÉRIO PÚBLICO", "MINISTÉRIO PÚBLICO"),
+        ("PREFEITURA", "PREFEITURA"),
+        ("ORDEM JUDICIAL", "ORDEM JUDICIAL"),
+        ("OUTRAS INSTITUIÇÕES", "OUTRAS INSTITUIÇÕES"),
+        ("VEREADORES", "VEREADORES"),
+    )
+    solicitante_protocolo = models.CharField(max_length=40, null=False, choices=SOLICITANTE_CHOICES)
+    logradouro = models.ForeignKey('Logradouro', on_delete=models.CASCADE, null=False)
+    descricao_protocolo = models.CharField(max_length=250, null=False)
+    STATUS_CHOICES = (
+        ("PENDENTE", "PENDENTE"),
+        ("AGUARDANDO EDITAL", "AGUARDANDO EDITAL"),
+        ("AGUARDANDO RETORNO DA AR", "AGUARDANDO RETORNO DA AR"),
+        ("FINALIZADO", "FINALIZADO"),
+        ("INSPECIONADO", "INSPECIONADO"),
+        ("PRAZO DE DEFESA AR", "PRAZO DE DEFESA AR"),
+        ("PRAZO DE DEFESA EDITAL", "PRAZO DE DEFESA EDITAL"),
+        ("PRAZO PARA JULGAMENTO AR", "PRAZO PARA JULGAMENTO AR"),
+        ("PRAZO DE JULGAMENTO EDITAL", "PRAZO DE JULGAMENTO EDITAL"),
+
+    )
+    ouvidoria = models.CharField(max_length=10, null=True, blank=True)
+    status_protocolo = models.CharField(max_length=26, null=False, choices=STATUS_CHOICES)
+    entrada_protocolo = models.DateField(null=False)
+    encerramento_protocolo = models.DateField(null=True, blank=True)
+
+
+    def __str__(self):
+        return self.protocolo
+
+    def save(self, *args, **kwargs):
+        self.protocolo = self.protocolo.upper()
+        self.descricao_protocolo = self.descricao_protocolo.upper()
+
+        super(Protocolo, self).save(*args, **kwargs)
+
+class Fiscal(models.Model):
+    nome_fiscal = models.CharField(max_length=36, null=False)
+
+    matricula_fiscal = models.CharField(max_length=5, null=False)
+    NIVEL_CHOICES = (
+        ("FISCAL SANITÁRIO I", "FISCAL SANITÁRIO I"),
+        ("FISCAL SANITÁRIO II", "FISCAL SANITÁRIO II"),
+    )
+
+    nivel = models.CharField(max_length=19, null=False, choices=NIVEL_CHOICES)
+
+    primeiro_nome = models.CharField(max_length=16, null=False)
+
+    def __str__(self):
+        return self.primeiro_nome
+
+    def save(self, *args, **kwargs):
+        self.nome_fiscal = self.nome_fiscal.upper()
+        self.primeiro_nome = self.primeiro_nome.upper()
+
+        super(Fiscal, self).save(*args, **kwargs)
+
+
+
+class Inspecao(models.Model):
+    protocolo = models.ForeignKey('Protocolo', on_delete=models.CASCADE, null=False)
+    data_inspecao1 = models.DateField(null=False)
+    horario_inspecao1 = models.TimeField(null=False)
+    foto_inspecao_1 = models.FileField(upload_to='fotos/')
+    data_relatorio1 = models.DateField(blank=False)
+    fiscal = models.ForeignKey('Fiscal', on_delete=models.CASCADE, null=False)
+    MATO_CHOICES = (
+        ("", "MATO BAIXO"),
+        ("X", "MATO ALTO"),
+    )
+    mato = models.CharField(max_length=1, null=True, blank=True, choices=MATO_CHOICES)
+
+    ENTULHO_CHOICES = (
+        ("", "SEM ENTULHOS, LIXOS, ETC."),
+        ("X", "COM ENTULHO, LIXOS, ETC."),
+    )
+    entulho = models.CharField(max_length=1, null=True, blank=True, choices=ENTULHO_CHOICES)
+
+    terreno = models.ForeignKey('Terreno', on_delete=models.CASCADE, null=False)
+
+    def __str__(self):
+        return "{} - {}, {}".format(self.protocolo, self.terreno, self.data_inspecao1)
+
+    @property
+    def complemento(self):
+        if self.terreno.complemento_terreno is not None:
+            return self.terreno.complemento_terreno
+
+class Infracao(models.Model):
+    inspecao = models.ForeignKey(Inspecao, on_delete=models.CASCADE)
+    data_auto = models.DateField(null=False, verbose_name="Data da autuação")
+    rastreio_infracao = models.CharField(max_length=13, null=True, blank=True, verbose_name="Código de rastreio")
+    STATUS_RASTREIO_CHOICES = (
+        ("NÃO ENVIADO AINDA", "NÃO ENVIADO AINDA"),
+        ("ENVIADO", "ENVIADO"),
+        ("ENTREGUE", "ENTREGUE"),
+        ("MUDOU-SE", "MUDOU-SE"),
+        ("ENDEREÇO INSUFICIENTE", "ENDEREÇO INSUFICIENTE"),
+        ("NÃO EXISTE O NÚMERO", "NÃO EXISTE O NÚMERO"),
+        ("DESCONHECIDO", "DESCONHECIDO"),
+        ("RECUSADO", "RECUSADO"),
+        ("OUTROS", "OUTROS"),
+        ("NÃO PROCURADO", "NÃO PROCURADO"),
+        ("AUSENTE", "AUSENTE"),
+        ("FALECIDO", "FALECIDO"),
+    )
+
+    status_rastreio = models.CharField(max_length=22, blank=True, choices=STATUS_RASTREIO_CHOICES, verbose_name="Status devolução Correios")
+
+    data_entrega_autuacao = models.DateField(null=True, blank=True, verbose_name="Data da entrega do Auto de infração")
+    DEFENDEU_CHOICES = (
+        ("PENDENTE", "PENDENTE"),
+        ("SIM", "SIM"),
+        ("NÃO", "NÃO"),
+    )
+    nome_recebedor = models.CharField(max_length=60, null=True, verbose_name="Quem recebeu?")
+    defendeu = models.CharField(max_length=15, null=False, choices=DEFENDEU_CHOICES, verbose_name="Apresentou defesa?")
+
+    def __str__(self):
+        return "{}. {}, {}, {}, {}, {}, {}, {}".format( self.id, self.data_auto,
+                                            self.inspecao)
+
+
+
+
+
+
+
 
 
