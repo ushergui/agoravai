@@ -125,7 +125,7 @@ class FiscalCreate(LoginRequiredMixin, CreateView):
 class InspecaoCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     model = Inspecao
-    fields = ['protocolo','data_inspecao1','horario_inspecao1','foto_inspecao_1','data_relatorio1','fiscal', 'mato','entulho','terreno']
+    fields = ['protocolo','data_inspecao1','horario_inspecao1','foto_inspecao_1','data_relatorio1','fiscal', 'mato','entulho', 'lixo', 'carcaca', 'terreno','material','pneu','outro','movel']
     template_name = 'form-upload.html'
     success_url = reverse_lazy('listar-inspecoes')
 
@@ -222,7 +222,7 @@ class FiscalUpdate(LoginRequiredMixin, UpdateView):
 class InspecaoUpdate(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('login')
     model = Inspecao
-    fields = ['protocolo','data_inspecao1','horario_inspecao1','foto_inspecao_1','data_relatorio1','fiscal', 'mato','entulho','terreno']
+    fields = ['protocolo','data_inspecao1','horario_inspecao1','foto_inspecao_1','data_relatorio1','fiscal', 'mato','entulho', 'lixo', 'carcaca', 'terreno','material','pneu','outro','movel']
     template_name = 'form-upload.html'
     success_url = reverse_lazy('listar-inspecoes')
 

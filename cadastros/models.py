@@ -176,16 +176,53 @@ class Inspecao(models.Model):
     data_relatorio1 = models.DateField(blank=False)
     fiscal = models.ForeignKey('Fiscal', on_delete=models.CASCADE, null=False)
     MATO_CHOICES = (
-        ("", "MATO BAIXO"),
-        ("X", "MATO ALTO"),
-    )
+            ("", "NÃO."),
+            ("X", "SIM,"),
+        )
     mato = models.CharField(max_length=1, null=True, blank=True, choices=MATO_CHOICES)
 
-    ENTULHO_CHOICES = (
-        ("", "SEM ENTULHOS, LIXOS, ETC."),
-        ("X", "COM ENTULHO, LIXOS, ETC."),
+    PNEU_CHOICES = (
+        ("", "NÃO."),
+        ("X", "SIM,"),
     )
+    pneu = models.CharField(max_length=1, null=True, blank=True, choices=PNEU_CHOICES)
+
+    ENTULHO_CHOICES = (
+
+            ("", "NÃO."),
+            ("X", "SIM,"),
+        )
     entulho = models.CharField(max_length=1, null=True, blank=True, choices=ENTULHO_CHOICES)
+
+    MATERIAL_CHOICES = (
+        ("", "NÃO."),
+        ("X", "SIM,"),
+    )
+    material = models.CharField(max_length=1, null=True, blank=True, choices=MATERIAL_CHOICES)
+
+    LIXO_CHOICES = (
+        ("", "NÃO."),
+        ("X", "SIM,"),
+    )
+    lixo = models.CharField(max_length=1, null=True, blank=True, choices=LIXO_CHOICES)
+
+    MOVEL_CHOICES = (
+        ("", "NÃO."),
+        ("X", "SIM,"),
+    )
+    movel = models.CharField(max_length=1, null=True, blank=True, choices=MOVEL_CHOICES)
+
+    CARCACA_CHOICES = (
+        ("", "NÃO."),
+        ("X", "SIM,"),
+    )
+    carcaca = models.CharField(max_length=1, null=True, blank=True, choices=CARCACA_CHOICES)
+
+    OUTRO_CHOICES = (
+        ("", "NÃO."),
+        ("X", "SIM,"),
+    )
+    outro = models.CharField(max_length=1, null=True, blank=True, choices=OUTRO_CHOICES)
 
     terreno = models.ForeignKey('Terreno', on_delete=models.CASCADE, null=False)
 
