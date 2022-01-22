@@ -5,7 +5,7 @@
 {% load crispy_forms_tags %}
 
 {% block conteudo %}
-<h3>{{ titulo }}</h3>
+<h3>Cadastro de {{ titulo }}</h3>
 <p class="lead">
     Preencha todos os campos obrigatórios.
 </p>
@@ -24,4 +24,19 @@
     </button>
 
 </form>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/jquery.mask.min.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        $("#id_cep").mask("00.000-000");
+        $("#id_inscricao").mask("00.00.000.0000.000");
+        $("#id_data_inspecao1").mask("00/00/0000");
+        $("#id_data_relatorio1").mask("00/00/0000");
+        $('#id_horario_inspecao1').mask('00:00');
+        $('#id_entrada_protocolo').mask("00/00/0000");
+    });
+</script>
+
 {% endblock %}

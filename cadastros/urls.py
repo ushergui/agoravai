@@ -13,6 +13,8 @@ from .views import EstadoList, CidadeList, BairroList, LogradouroList, \
     ProprietarioList, TerrenoList, ProtocoloList, FiscalList, InspecaoList, InfracaoList
 from .views import gerar_relatorio, EstadoDetailView
 
+from . import views
+
 #padrão de url que tem lá na outra url, ele funciona como se fosse um vetor
 
 urlpatterns = [
@@ -73,8 +75,6 @@ urlpatterns = [
     path('gerar_relatorio/<int:pk>/', gerar_relatorio, name='gerar_relatorio'),
     path('detalhe_estado/<int:pk>/', EstadoDetailView, name='detalhe_estado'),
     path('detalhe_estado/<int:pk>/', EstadoDetailView, name='detalhe_estado'),
-
-
 
 
 ]

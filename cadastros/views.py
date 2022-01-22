@@ -1,6 +1,5 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView,  BaseDetailView
 from django.views.generic.list import ListView
-from django.views.generic import TemplateView
 
 
 from .models import Estado, Cidade, Bairro, Logradouro, Proprietario, Terreno, Protocolo, Infracao, Inspecao, Fiscal #Produtividade
@@ -67,6 +66,13 @@ class EstadoCreate(LoginRequiredMixin, CreateView):
     template_name = 'form.html'
     success_url = reverse_lazy('listar-estados')
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['titulo'] = "Estado"
+        context['botao'] = "Cadastrar"
+        return context
+
 
 
 
@@ -78,12 +84,25 @@ class CidadeCreate(LoginRequiredMixin, CreateView):
     template_name = 'form.html'
     success_url = reverse_lazy('listar-cidades')
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['titulo'] = "Cidade"
+        context['botao'] = "Cadastrar"
+        return context
+
 class BairroCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     model = Bairro
     fields = ['bairro', 'cidade']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-bairros')
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['titulo'] = "Bairro"
+        context['botao'] = "Cadastrar"
+        return context
 
 class LogradouroCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
@@ -91,6 +110,12 @@ class LogradouroCreate(LoginRequiredMixin, CreateView):
     fields = ['logradouro', 'bairro', 'cep']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-logradouros')
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['titulo'] = "Logradouro"
+        context['botao'] = "Cadastrar"
+        return context
 
 class ProprietarioCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
@@ -98,6 +123,12 @@ class ProprietarioCreate(LoginRequiredMixin, CreateView):
     fields = ['nome_proprietario', 'logradouro_proprietario', 'numero_proprietario', 'complemento_proprietario']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-proprietarios')
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['titulo'] = "Proprietário"
+        context['botao'] = "Cadastrar"
+        return context
 
 class TerrenoCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
@@ -107,13 +138,26 @@ class TerrenoCreate(LoginRequiredMixin, CreateView):
               'numero_correspondencia','complemento_correspondencia']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-terrenos')
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['titulo'] = "Terreno"
+        context['botao'] = "Cadastrar"
+        return context
 
 class ProtocoloCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     model = Protocolo
-    fields = ['protocolo','solicitante_protocolo','logradouro','descricao_protocolo','ouvidoria','status_protocolo','entrada_protocolo','encerramento_protocolo']
+    fields = ['protocolo','solicitante_protocolo','logradouro','descricao_protocolo','ouvidoria','status_protocolo','entrada_protocolo']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-protocolos')
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['titulo'] = "Protocolo"
+        context['botao'] = "Cadastrar"
+        return context
 
 class FiscalCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
@@ -121,6 +165,12 @@ class FiscalCreate(LoginRequiredMixin, CreateView):
     fields = ['nome_fiscal','matricula_fiscal','nivel','primeiro_nome']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-fiscais')
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['titulo'] = "Fiscal"
+        context['botao'] = "Cadastrar"
+        return context
 
 class InspecaoCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
@@ -128,6 +178,13 @@ class InspecaoCreate(LoginRequiredMixin, CreateView):
     fields = ['protocolo','data_inspecao1','horario_inspecao1','foto_inspecao_1','data_relatorio1','fiscal', 'mato','entulho', 'lixo', 'carcaca', 'terreno','material','pneu','outro','movel']
     template_name = 'form-upload.html'
     success_url = reverse_lazy('listar-inspecoes')
+    ordering = ['terreno']
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['titulo'] = "Inspeção"
+        context['botao'] = "Cadastrar"
+        return context
 
 class InfracaoCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
@@ -135,6 +192,12 @@ class InfracaoCreate(LoginRequiredMixin, CreateView):
     fields = ['inspecao','data_auto','rastreio_infracao','status_rastreio','data_entrega_autuacao','nome_recebedor', 'defendeu']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-infracoes')
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        context['titulo'] = "Infração"
+        context['botao'] = "Cadastrar"
+        return context
 
 
 
@@ -339,26 +402,31 @@ class CidadeList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     model = Cidade
     template_name = 'listar-cidades.html'
+    ordering = ['nome_cidade']
 
 class BairroList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     model = Bairro
     template_name = 'listar-bairros.html'
+    ordering = ['bairro']
 
 class LogradouroList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     model = Logradouro
     template_name = 'listar-logradouros.html'
+    ordering = ['logradouro']
 
 class ProprietarioList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     model = Proprietario
     template_name = 'listar-proprietarios.html'
+    ordering = ['nome_proprietario']
 
 class TerrenoList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     model = Terreno
     template_name = 'listar-terrenos.html'
+    ordering = ['inscricao']
 
 class ProtocoloList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
@@ -369,6 +437,7 @@ class FiscalList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     model = Fiscal
     template_name = 'listar-fiscais.html'
+    ordering = ['nome_fiscal']
 
 class InspecaoList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')

@@ -19,9 +19,9 @@
         <th>Tem mato?</th>
         <th>Tem entulho?</th>
         <th>Terreno</th>
-        <th>Relatório</th>
+        <th style='text-align:center;vertical-align:middle'>Relatório</th>
 
-        <th>Opções</th>
+        <th  style='text-align:center;vertical-align:middle'>Opções</th>
 
     </tr>
     {% for inspecao in object_list %}
@@ -35,14 +35,16 @@
         <td>{{ inspecao.mato }}</td>
         <td>{{ inspecao.entulho }}</td>
         <td>{{ inspecao.terreno }}</td>
-        {% if inspecao.mato == "X" and inspecao.entulho == "X" %}
+        {% if inspecao.mato == "X" or inspecao.entulho == "X" %}
 
-        <td><a href="{% url 'gerar_relatorio' pk=inspecao.pk %}">
-          Relatório
+        <td style='text-align:center;vertical-align:middle'><a href="{% url 'gerar_relatorio' pk=inspecao.pk %}">
+            <i class="fa fa-file" aria-hidden="true"></i>
+
+
         </a></td>
 
         {% endif %}
-        <td>
+        <td  style='text-align:center;vertical-align:middle'>
             <a href="{% url 'editar-inspecao' inspecao.pk %}" class="btn btn-warning btn-sm" title="Editar">
             Editar
             </a>

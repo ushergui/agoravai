@@ -10,7 +10,7 @@ class Estado (models.Model):
     #Anotação padrão para informar que é string
 
     def __str__(self):
-        return "{} - {}".format(self.sigla_estado, self.nome_estado)
+        return self.nome_estado
     class Meta:
         ordering = ['nome_estado']
 
@@ -30,6 +30,8 @@ class Cidade (models.Model):
     def save(self, *args, **kwargs):
         self.nome_cidade = self.nome_cidade.upper()
         super(Cidade, self).save(*args, **kwargs)
+    class Meta:
+        ordering = ["nome_cidade"]
 
 class Bairro (models.Model):
     bairro=models.CharField(max_length=70, verbose_name="Bairro")
@@ -41,6 +43,8 @@ class Bairro (models.Model):
     def save(self, *args, **kwargs):
         self.bairro = self.bairro.upper()
         super(Bairro, self).save(*args, **kwargs)
+    class Meta:
+        ordering = ["bairro"]
 
 
 class Logradouro (models.Model):
@@ -52,6 +56,8 @@ class Logradouro (models.Model):
     def save(self, *args, **kwargs):
         self.logradouro = self.logradouro.upper()
         super(Logradouro, self).save(*args, **kwargs)
+    class Meta:
+        ordering = ["logradouro"]
 
 class Proprietario(models.Model):
     nome_proprietario = models.CharField(max_length=55)
@@ -66,6 +72,8 @@ class Proprietario(models.Model):
         self.numero_proprietario = self.numero_proprietario.upper()
         self.complemento_proprietario = self.complemento_proprietario.upper()
         super(Proprietario, self).save(*args, **kwargs)
+    class Meta:
+        ordering = ["nome_proprietario"]
 
     @property
     def complemento(self):
@@ -96,7 +104,9 @@ class Terreno(models.Model):
         super(Terreno, self).save(*args, **kwargs)
 
     def __str__(self):
-        return "{} - {}, {}".format(self.inscricao, self.proprietario, self.area)
+        return "{} - {}".format(self.inscricao, self.proprietario)
+    class Meta:
+        ordering = ["inscricao"]
 
     #class Produtividade(models.Model):
         #descricao = models.CharField(max_length=280, null=False, verbose_name="Descrição")
@@ -133,7 +143,14 @@ class Protocolo(models.Model):
     status_protocolo = models.CharField(max_length=26, null=False, choices=STATUS_CHOICES)
     entrada_protocolo = models.DateField(null=False)
     encerramento_protocolo = models.DateField(null=True, blank=True)
-
+    class Meta:
+        ordering = ["protocolo"]
+    @property
+    def ouvidorias(self):
+        if self.ouvidoria is not None:
+            return self.ouvidoria;
+        else:
+            return ""
 
     def __str__(self):
         return self.protocolo
@@ -143,6 +160,8 @@ class Protocolo(models.Model):
         self.descricao_protocolo = self.descricao_protocolo.upper()
 
         super(Protocolo, self).save(*args, **kwargs)
+
+
 
 class Fiscal(models.Model):
     nome_fiscal = models.CharField(max_length=36, null=False)
@@ -156,6 +175,8 @@ class Fiscal(models.Model):
     nivel = models.CharField(max_length=19, null=False, choices=NIVEL_CHOICES)
 
     primeiro_nome = models.CharField(max_length=16, null=False)
+    class Meta:
+        ordering = ["nome_fiscal"]
 
     def __str__(self):
         return self.primeiro_nome
@@ -170,61 +191,62 @@ class Fiscal(models.Model):
 
 class Inspecao(models.Model):
     protocolo = models.ForeignKey('Protocolo', on_delete=models.CASCADE, null=False)
-    data_inspecao1 = models.DateField(null=False)
-    horario_inspecao1 = models.TimeField(null=False)
-    foto_inspecao_1 = models.FileField(upload_to='fotos/')
-    data_relatorio1 = models.DateField(blank=False)
+    data_inspecao1 = models.DateField(null=False, verbose_name="Data da inspeção")
+    horario_inspecao1 = models.TimeField(null=False, verbose_name="Horário de inspeção")
+    foto_inspecao_1 = models.FileField(upload_to='fotos/', verbose_name="Foto da inspeção")
+    data_relatorio1 = models.DateField(blank=False, verbose_name="Data do relatório da inspeção")
     fiscal = models.ForeignKey('Fiscal', on_delete=models.CASCADE, null=False)
     MATO_CHOICES = (
-            ("", "NÃO."),
-            ("X", "SIM,"),
-        )
-    mato = models.CharField(max_length=1, null=True, blank=True, choices=MATO_CHOICES)
+        ("", "NÃO"),
+        ("X", "SIM"),
+    )
+    mato = models.CharField(max_length=1, null=True, blank=True, choices=MATO_CHOICES, verbose_name="Mato alto")
 
     PNEU_CHOICES = (
-        ("", "NÃO."),
-        ("X", "SIM,"),
+        ("", "NÃO"),
+        ("X", "SIM"),
     )
-    pneu = models.CharField(max_length=1, null=True, blank=True, choices=PNEU_CHOICES)
+    pneu = models.CharField(max_length=1, null=True, blank=True, choices=PNEU_CHOICES, verbose_name="Pneu(s)")
 
     ENTULHO_CHOICES = (
-
-            ("", "NÃO."),
-            ("X", "SIM,"),
-        )
-    entulho = models.CharField(max_length=1, null=True, blank=True, choices=ENTULHO_CHOICES)
+        ("", "NÃO"),
+        ("X", "SIM"),
+    )
+    entulho = models.CharField(max_length=1, null=True, blank=True, choices=ENTULHO_CHOICES, verbose_name="Entulho(s)")
 
     MATERIAL_CHOICES = (
-        ("", "NÃO."),
-        ("X", "SIM,"),
+        ("", "NÃO"),
+        ("X", "SIM"),
     )
-    material = models.CharField(max_length=1, null=True, blank=True, choices=MATERIAL_CHOICES)
+    material = models.CharField(max_length=1, null=True, blank=True, choices=MATERIAL_CHOICES, verbose_name="Material(is)")
 
     LIXO_CHOICES = (
-        ("", "NÃO."),
-        ("X", "SIM,"),
+        ("", "NÃO"),
+        ("X", "SIM"),
     )
-    lixo = models.CharField(max_length=1, null=True, blank=True, choices=LIXO_CHOICES)
+    lixo = models.CharField(max_length=1, null=True, blank=True, choices=LIXO_CHOICES, verbose_name="Lixo(s)")
 
     MOVEL_CHOICES = (
-        ("", "NÃO."),
-        ("X", "SIM,"),
+        ("", "NÃO"),
+        ("X", "SIM"),
     )
-    movel = models.CharField(max_length=1, null=True, blank=True, choices=MOVEL_CHOICES)
+    movel = models.CharField(max_length=1, null=True, blank=True, choices=MOVEL_CHOICES, verbose_name="Móvel(is)")
 
     CARCACA_CHOICES = (
-        ("", "NÃO."),
-        ("X", "SIM,"),
+        ("", "NÃO"),
+        ("X", "SIM"),
     )
-    carcaca = models.CharField(max_length=1, null=True, blank=True, choices=CARCACA_CHOICES)
+    carcaca = models.CharField(max_length=1, null=True, blank=True, choices=CARCACA_CHOICES, verbose_name="Carcaça")
 
     OUTRO_CHOICES = (
-        ("", "NÃO."),
-        ("X", "SIM,"),
+        ("", "NÃO"),
+        ("X", "SIM"),
     )
-    outro = models.CharField(max_length=1, null=True, blank=True, choices=OUTRO_CHOICES)
+    outro = models.CharField(max_length=1, null=True, blank=True, choices=OUTRO_CHOICES, verbose_name="Outros")
 
     terreno = models.ForeignKey('Terreno', on_delete=models.CASCADE, null=False)
+
+
 
     def __str__(self):
         return "{} - {}, {}".format(self.protocolo, self.terreno, self.data_inspecao1)
@@ -233,6 +255,63 @@ class Inspecao(models.Model):
     def complemento(self):
         if self.terreno.complemento_terreno is not None:
             return self.terreno.complemento_terreno
+
+    @property
+    def lixos(self):
+        if self.lixo is not None:
+            return self.lixo
+        else:
+            return " "
+
+    @property
+    def matos(self):
+        if self.mato is not None:
+            return self.mato
+        else:
+            return " "
+
+    @property
+    def entulhos(self):
+        if self.entulho is not None:
+            return self.entulho
+        else:
+            return " "
+
+    @property
+    def materiais(self):
+        if self.material is not None:
+            return self.material
+        else:
+            return " "
+
+    @property
+    def carcacas(self):
+        if self.carcaca is not None:
+            return self.carcaca
+        else:
+            return " "
+
+    @property
+    def materiais(self):
+        if self.material is not None:
+            return self.material
+        else:
+            return " "
+
+    @property
+    def outros(self):
+        if self.outro is not None:
+            return self.outro
+        else:
+            return " "
+
+    @property
+    def moveis(self):
+        if self.movel is not None:
+            return self.movel
+        else:
+            return " "
+
 
 class Infracao(models.Model):
     inspecao = models.ForeignKey(Inspecao, on_delete=models.CASCADE)
@@ -268,6 +347,28 @@ class Infracao(models.Model):
         return "{}. {}, {}, {}, {}, {}, {}, {}".format( self.id, self.data_auto,
                                             self.inspecao)
 
+""" def get_sequencial(self):
+    tipo = self.tipo
+    data = self.data_assinatura
+    ano = data.year
+    contrato = ContratoCompra.objects.filter(
+    ativo=True, tipo=tipo, data_assinatura__year=ano).last()
+    if contrato:
+        return contrato.numero + 1
+        else:
+        return 1
+    def numero_formatado(self):
+        data = self.data_assinatura
+        ano = data.year
+        return f'{str(self.numero).zfill(4)}/{str(ano)}'
+
+    def save(self, *args, **kwargs):
+        if self.numero is None or self.numero == '':
+    self.numero = self.get_sequencial()
+    if self.numero_format_ano is None:
+    self.numero_format_ano = self.numero_formatado
+    super(ContratoCompra, self).save(*args, **kwargs)
+"""
 
 
 

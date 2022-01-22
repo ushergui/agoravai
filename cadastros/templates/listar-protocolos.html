@@ -26,9 +26,9 @@
     <tr>
         <td>{{ protocolo.protocolo }}</td>
         <td>{{ protocolo.solicitante_protocolo }}</td>
-        <td>{{ protocolo.logradouro }}</td>
+        <td>{{ protocolo.logradouro.logradouro }} - {{ protocolo.logradouro.bairro.bairro }}</td>
         <td>{{ protocolo.descricao_protocolo }}</td>
-        <td>{{ protocolo.ouvidoria }}</td>
+        <td>{{ protocolo.ouvidorias }}</td>
         <td>{{ protocolo.status_protocolo }}</td>
         <td>{{ protocolo.entrada_protocolo|date:"d/m/Y" }}</td>
         <td>{{ protocolo.encerramento_protocolo|date:"d/m/Y" }}</td>
