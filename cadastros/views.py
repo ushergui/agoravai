@@ -135,7 +135,7 @@ class TerrenoCreate(LoginRequiredMixin, CreateView):
     model = Terreno
     fields = ['inscricao', 'logradouro_terreno','numero_terreno','complemento_terreno',
               'proprietario', 'lote','quadra','area','logradouro_correspondencia',
-              'numero_correspondencia','complemento_correspondencia']
+              'numero_correspondencia','complemento_correspondencia','tipo_de_imovel']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-terrenos')
     def get_context_data(self, *args, **kwargs):
@@ -189,7 +189,7 @@ class InspecaoCreate(LoginRequiredMixin, CreateView):
 class InfracaoCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     model = Infracao
-    fields = ['inspecao','data_auto','rastreio_infracao','status_rastreio','data_entrega_autuacao','nome_recebedor', 'defendeu']
+    fields = ['inspecao','data_auto']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-infracoes')
     def get_context_data(self, *args, **kwargs):
@@ -254,7 +254,7 @@ class LogradouroUpdate(LoginRequiredMixin, UpdateView):
 class ProprietarioUpdate(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('login')
     model = Proprietario
-    fields = ['nome_proprietario', 'logradouro_proprietario']
+    fields = ['nome_proprietario', 'logradouro_proprietario', 'numero_proprietario', 'complemento_proprietario']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-proprietarios')
 
@@ -263,7 +263,7 @@ class TerrenoUpdate(LoginRequiredMixin, UpdateView):
     model = Terreno
     fields = ['inscricao', 'logradouro_terreno','numero_terreno','complemento_terreno',
               'proprietario', 'lote','quadra','area','logradouro_correspondencia',
-              'numero_correspondencia','complemento_correspondencia']
+              'numero_correspondencia','complemento_correspondencia', 'tipo_de_imovel']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-terrenos')
 
@@ -416,6 +416,7 @@ class LogradouroList(LoginRequiredMixin, ListView):
     template_name = 'listar-logradouros.html'
     ordering = ['logradouro']
 
+
 class ProprietarioList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     model = Proprietario
@@ -471,6 +472,17 @@ def gerar_relatorio(request,pk,template_name="gerar_relatorio.html"):
     inspecao = get_object_or_404(Inspecao, pk=pk)
     return render(request, template_name, {'inspecao':inspecao})
 
+def gerar_ar1(request,pk,template_name="gerar_ar1.html"):
+    infracao = get_object_or_404(Infracao, pk=pk)
+    return render(request, template_name, {'infracao':infracao})
+
+def gerar_ar2(request,pk,template_name="gerar_ar2.html"):
+    infracao = get_object_or_404(Infracao, pk=pk)
+    return render(request, template_name, {'infracao':infracao})
+
+def gerar_auto(request,pk,template_name="auto_infracao.html"):
+    infracao = get_object_or_404(Infracao, pk=pk)
+    return render(request, template_name, {'infracao':infracao})
 
 def EstadoDetailView(request, pk):
     estado = get_object_or_404(Estado, pk=pk)

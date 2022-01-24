@@ -32,14 +32,13 @@
 
         <td>{{ inspecao.data_relatorio1|date:"d/m/Y" }}</td>
         <td>{{ inspecao.fiscal }}</td>
-        <td>{{ inspecao.mato }}</td>
-        <td>{{ inspecao.entulho }}</td>
+        <td>{{ inspecao.matos }}</td>
+        <td>{{ inspecao.entulhos }}</td>
         <td>{{ inspecao.terreno }}</td>
-        {% if inspecao.mato == "X" or inspecao.entulho == "X" %}
+        {% if inspecao.matos == "X" or inspecao.entulhos == "X" or inspecao.materiais == "X" or inspecao.pneus == "X" or inspecao.lixos == "X" or inspecao.moveis == "X" or inspecao.outros == "X" or inspecao.carcacas == "X" %}
 
         <td style='text-align:center;vertical-align:middle'><a href="{% url 'gerar_relatorio' pk=inspecao.pk %}">
             <i class="fa fa-file" aria-hidden="true"></i>
-
 
         </a></td>
 

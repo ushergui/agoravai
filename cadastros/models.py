@@ -85,22 +85,31 @@ class Terreno(models.Model):
     inscricao = models.CharField(max_length=18, null=False, verbose_name="Inscrição imobiliária")
     logradouro_terreno = models.ForeignKey(Logradouro, on_delete=models.PROTECT, verbose_name="Logradouro do terreno", related_name="logradouro_terreno")
     numero_terreno = models.CharField(max_length=20, verbose_name="Número do terreno")
-    complemento_terreno = models.CharField(max_length=40, verbose_name="Complemento")
+    complemento_terreno = models.CharField(max_length=40, verbose_name="Complemento", null=True, blank=True)
     proprietario = models.ForeignKey(Proprietario, on_delete=models.PROTECT, verbose_name="Proprietário")
     lote = models.CharField(max_length=4, null=False)
     quadra = models.CharField(max_length=4, null=False)
     area = models.FloatField(null=False)
     logradouro_correspondencia = models.ForeignKey(Logradouro, on_delete=models.PROTECT, verbose_name="Endereço de correspondência", related_name="logradouro_correspondencia")
     numero_correspondencia = models.CharField(max_length=20, verbose_name="Número")
-    complemento_correspondencia = models.CharField(max_length=40, verbose_name="Complemento")
+    complemento_correspondencia = models.CharField(max_length=40, verbose_name="Complemento", null=True, blank=True)
+    TIPO_CHOICES = (
+        ("TERRENO", "TERRENO"),
+        ("CASA ABANDONADA", "CASA ABANDONADA"),
+    )
+    tipo_de_imovel = models.CharField(max_length=22, null=False, choices=TIPO_CHOICES)
+
+    @property
+    def complemento(self):
+        if self.terreno.complemento_terreno is not None:
+            return self.terreno.complemento_terreno
+
 
     def save(self, *args, **kwargs):
         self.numero_terreno = self.numero_terreno.upper()
-        self.complemento_terreno = self.complemento_terreno.upper()
         self.lote = self.lote.upper()
         self.quadra = self.quadra.upper()
         self.numero_correspondencia = self.numero_correspondencia.upper()
-        self.complemento_correspondencia = self.complemento_correspondencia.upper()
         super(Terreno, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -247,65 +256,64 @@ class Inspecao(models.Model):
     terreno = models.ForeignKey('Terreno', on_delete=models.CASCADE, null=False)
 
 
-
     def __str__(self):
-        return "{} - {}, {}".format(self.protocolo, self.terreno, self.data_inspecao1)
+        data_inspecao1_formated = self.data_inspecao1.strftime("%d/%m/%Y")
+        return "{} - {}, {}".format(self.protocolo, self.terreno, data_inspecao1_formated)
+
 
     @property
     def complemento(self):
         if self.terreno.complemento_terreno is not None:
             return self.terreno.complemento_terreno
 
-    @property
+
     def lixos(self):
         if self.lixo is not None:
             return self.lixo
         else:
             return " "
 
-    @property
     def matos(self):
         if self.mato is not None:
             return self.mato
         else:
             return " "
 
-    @property
     def entulhos(self):
         if self.entulho is not None:
             return self.entulho
         else:
             return " "
 
-    @property
     def materiais(self):
         if self.material is not None:
             return self.material
         else:
             return " "
 
-    @property
     def carcacas(self):
         if self.carcaca is not None:
             return self.carcaca
         else:
             return " "
+    def pneus(self):
+        if self.pneu is not None:
+            return self.pneu
+        else:
+            return " "
 
-    @property
     def materiais(self):
         if self.material is not None:
             return self.material
         else:
             return " "
 
-    @property
     def outros(self):
         if self.outro is not None:
             return self.outro
         else:
             return " "
 
-    @property
     def moveis(self):
         if self.movel is not None:
             return self.movel
@@ -315,7 +323,9 @@ class Inspecao(models.Model):
 
 class Infracao(models.Model):
     inspecao = models.ForeignKey(Inspecao, on_delete=models.CASCADE)
-    data_auto = models.DateField(null=False, verbose_name="Data da autuação")
+
+
+
     rastreio_infracao = models.CharField(max_length=13, null=True, blank=True, verbose_name="Código de rastreio")
     STATUS_RASTREIO_CHOICES = (
         ("NÃO ENVIADO AINDA", "NÃO ENVIADO AINDA"),
@@ -332,7 +342,7 @@ class Infracao(models.Model):
         ("FALECIDO", "FALECIDO"),
     )
 
-    status_rastreio = models.CharField(max_length=22, blank=True, choices=STATUS_RASTREIO_CHOICES, verbose_name="Status devolução Correios")
+    status_rastreio = models.CharField(null=True, max_length=22, blank=True, choices=STATUS_RASTREIO_CHOICES, verbose_name="Status devolução Correios")
 
     data_entrega_autuacao = models.DateField(null=True, blank=True, verbose_name="Data da entrega do Auto de infração")
     DEFENDEU_CHOICES = (
@@ -340,12 +350,47 @@ class Infracao(models.Model):
         ("SIM", "SIM"),
         ("NÃO", "NÃO"),
     )
-    nome_recebedor = models.CharField(max_length=60, null=True, verbose_name="Quem recebeu?")
+    nome_recebedor = models.CharField( blank=True,max_length=60, null=True, verbose_name="Quem recebeu?")
     defendeu = models.CharField(max_length=15, null=False, choices=DEFENDEU_CHOICES, verbose_name="Apresentou defesa?")
 
+    numero = models.PositiveSmallIntegerField(null=True, blank=True)
+    numero_format_ano = models.CharField(max_length=9, null=True, blank=True)
+    data_auto = models.DateField(verbose_name='Data do Auto', null=True, blank=True)
+
+
+    def vrm(self):
+        vrm = self.inspecao.terreno.area * 2.1972
+        return str(f'{round(vrm, 2):.2f}'.replace('.',','))
+
+
+
+    def get_sequencial(self):
+        data = self.data_auto
+        ano = data.year
+        infracao = Infracao.objects.filter(
+            data_auto__year=ano).last()
+        if infracao:
+            return infracao.numero + 1
+        else:
+            return 1
+    @property
+    def numero_formatado(self):
+        data = self.data_auto
+        ano = data.year
+        return f'{str(self.numero).zfill(4)}/{str(ano)}'
+
+
+
+    def save(self, *args, **kwargs):
+        if self.numero is None or self.numero == '':
+            self.numero = self.get_sequencial()
+        if self.numero_format_ano is None:
+            self.numero_format_ano = self.numero_formatado
+        super(Infracao, self).save(*args, **kwargs)
+
+
     def __str__(self):
-        return "{}. {}, {}, {}, {}, {}, {}, {}".format( self.id, self.data_auto,
-                                            self.inspecao)
+        return f'{self.numero_formatado}'
 
 """ def get_sequencial(self):
     tipo = self.tipo

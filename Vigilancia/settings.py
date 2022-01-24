@@ -121,6 +121,8 @@ USE_I18N = True
 USE_TZ = True
 
 
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
@@ -145,3 +147,9 @@ MEDIA_URL = "/uploads/"
 LOGIN_REDIRECT_URL = 'index'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
+
+DATE_INPUT_FORMATS = [
+    '%d/%m/%Y', '%d/%m/%y',  # '25/10/2006', '25/10/06'
+    '%d de %b de %Y'#, '%d de %b, %Y',   # '25 de Out de 2006', '25 Out, 2006'
+    '%d de %B de %Y'#, '%d de %B, %Y',   # '25 de Outubro de 2006', '25 de Outubro, 2006'
+]

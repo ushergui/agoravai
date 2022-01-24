@@ -38,7 +38,7 @@
 <p style="position:absolute;top:22px;left:260px;white-space:nowrap" class="ft00"><b>Divisão de Vigilância Sanitária</b></p>
 <p style="position:absolute;top:46px;left:232px;white-space:nowrap" class="ft06"><b>RELATÓRIO DE INSPEÇÃO</b></p>
 <p style="position:absolute;top:90px;left:10px;white-space:nowrap" class="ft01"><b>Endereço do imóvel: </b></p>
-<p style="position:absolute;top:90px;left:156px;white-space:nowrap" class="ft03">{{ inspecao.terreno.logradouro_terreno.logradouro }}, {{ inspecao.terreno.numero_terreno }} {{ inspecao.terreno.complemento_terreno }} - {{ inspecao.terreno.logradouro_terreno.bairro.bairro }}</p>
+<p style="position:absolute;top:90px;left:156px;white-space:nowrap" class="ft03">{{ inspecao.terreno.logradouro_terreno.logradouro }}, {{ inspecao.terreno.numero_terreno }} {{ inspecao.terreno.complemento_terreno.complemento }} - {{ inspecao.terreno.logradouro_terreno.bairro.bairro }}</p>
 <p style="position:absolute;top:116px;left:10px;white-space:nowrap" class="ft01"><b>Inscrição cadastral: </b></p>
 <p style="position:absolute;top:116px;left:149px;white-space:nowrap" class="ft02">{{ inspecao.terreno.inscricao}}</p>
 <p style="position:absolute;top:116px;left:305px;white-space:nowrap" class="ft01"><b>Quadra:</b></p>
@@ -59,11 +59,15 @@
 <p style="position:absolute;top:204px;left:10px;white-space:nowrap" class="ft01"><b>Fundamentação Legal:</b></p>
 <p style="position:absolute;top:230px;left:10px;white-space:nowrap" class="ft01">Lei Municipal nº 4778/2011 – Dispõe sobre a Limpeza de Terrenos Baldios no Município de São Sebastião do </p>
 <p style="position:absolute;top:256px;left:10px;white-space:nowrap" class="ft01">Paraíso e dá outras providências.</p>
+  {% if inspecao.terreno.tipo_de_imovel == "TERRENO" %}
 <p style="position:absolute;top:292px;left:10px;white-space:nowrap" class="ft01"><b>Em inspeção ao terreno acima identificado, foi constatado a presença de:</b></p>
- <p style="position:absolute;top:318px;left:10px;white-space:nowrap" class="ft01">(&#160;{{ inspecao.matos }}&#160;)&#160;Mato alto&#160;&#160;&#160;&#160;
-  (&#160;{{ inspecao.entulhos }}&#160;)&#160;Entulho&#160;&#160;&#160;&#160;(&#160;{{ inspecao.materiais }}
-  &#160;)&#160;Material&#160;&#160;&#160;&#160;(&#160;{{ inspecao.pneus }}&#160;)&#160;Pneu&#160;&#160;&#160;&#160;(&#160;{{ inspecao.lixos }}&#160;)&#160;Lixo&#160;&#160;&#160;&#160;
-  (&#160;{{ inspecao.carcacas }}&#160;)&#160;Veículo&#160;&#160;&#160;&#160;(&#160;{{ inspecao.moveis }}&#160;)&#160;Móvel&#160;&#160;&#160;&#160;(&#160;{{ inspecao.outros }}&#160;)&#160;Outros&#160;&#160;&#160;      </p>
+ {% else %}
+ <p style="position:absolute;top:292px;left:10px;white-space:nowrap" class="ft01"><b>Em inspeção à casa abandonada acima identificada, foi constatado a presença de:</b></p>
+ {% endif %}
+ <p style="position:absolute;top:318px;left:10px;white-space:nowrap" class="ft01">(&#160;{{ inspecao.matos }}&#160;)&#160;Mato alto&#160;&#160;&#160;
+  (&#160;{{ inspecao.entulhos }}&#160;)&#160;Entulho&#160;&#160;&#160;(&#160;{{ inspecao.materiais }}
+  &#160;)&#160;Material&#160;&#160;&#160;(&#160;{{ inspecao.pneus }}&#160;)&#160;Pneu&#160;&#160;&#160;(&#160;{{ inspecao.lixos }}&#160;)&#160;Lixo&#160;&#160;&#160;
+  (&#160;{{ inspecao.carcacas }}&#160;)&#160;Veículo&#160;&#160;&#160;(&#160;{{ inspecao.moveis }}&#160;)&#160;Móvel&#160;&#160;&#160;(&#160;{{ inspecao.outros }}&#160;)&#160;Outros&#160;&#160;&#160;      </p>
  <img src='{{ inspecao.foto_inspecao_1.url }}' style="position:absolute;left:10px;top:370px;height:450px;width:700px" />
 
  {% if inspecao.matos == "X" or inspecao.entulhos == "X" or inspecao.materiais == "X" or inspecao.pneus == "X" or inspecao.lixos == "X" or inspecao.moveis == "X" or inspecao.outros == "X" or inspecao.carcacas == "X" %}
