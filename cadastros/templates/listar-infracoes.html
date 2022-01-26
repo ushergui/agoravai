@@ -14,8 +14,10 @@
         <th>Número</th>
         <th>Imprimir</th>
         <th>Data do termo</th>
-        <th class="text-center">AR Cor.</th>
-        <th class="text-center">AR Prop.</th>
+        <th class="text-center">AR Cor. C/N</th>
+        <th class="text-center">AR Prop. C/N</th>
+        <th class="text-center">AR Cor. S/N</th>
+        <th class="text-center">AR Prop. S/N</th>
         <th>Rastreio AR</th>
         <th>Status rastreio</th>
         <th>Data de entrega</th>
@@ -41,6 +43,18 @@
 
         <td class="text-center">
         <a href="{% url 'gerar_ar2' pk=infracao.pk %}">
+          <i class="fa fa-envelope" aria-hidden="true"></i>
+        </a>
+        </td>
+
+        <td class="text-center">
+        <a href="{% url 'gerar_ar3' pk=infracao.pk %}">
+          <i class="fa fa-envelope" aria-hidden="true"></i>
+        </a>
+        </td>
+
+        <td class="text-center">
+        <a href="{% url 'gerar_ar4' pk=infracao.pk %}">
           <i class="fa fa-envelope" aria-hidden="true"></i>
         </a>
         </td>

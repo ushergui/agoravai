@@ -12,6 +12,7 @@
 <table class="table table-striped" id="tabela-listar">
     <thead>
     <tr>
+        <th>Tipo</th>
         <th>Logradouro</th>
         <th>Bairro</th>
         <th>CEP</th>
@@ -22,7 +23,8 @@
     <tbody>
     {% for logradouro in object_list %}
     <tr>
-        <td>{{ logradouro.logradouro }}</td>
+        <td>{{ logradouro.tipo }}</td>
+        <td>{{ logradouro.nome_logradouro }}</td>
         <td>{{ logradouro.bairro.bairro }}</td>
         <td>{{ logradouro.cep }}</td>
         <td>

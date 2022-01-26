@@ -11,7 +11,7 @@ from .views import EstadoDelete, CidadeDelete, BairroDelete, LogradouroDelete, \
     ProprietarioDelete, TerrenoDelete, ProtocoloDelete, FiscalDelete, InspecaoDelete, InfracaoDelete
 from .views import EstadoList, CidadeList, BairroList, LogradouroList, \
     ProprietarioList, TerrenoList, ProtocoloList, FiscalList, InspecaoList, InfracaoList
-from .views import gerar_relatorio, EstadoDetailView, gerar_ar1, gerar_ar2, gerar_auto
+from .views import gerar_relatorio, EstadoDetailView, gerar_ar1, gerar_ar2, gerar_auto, gerar_ar3, gerar_ar4
 
 from . import views
 
@@ -75,6 +75,8 @@ urlpatterns = [
     path('gerar_relatorio/<int:pk>/', gerar_relatorio, name='gerar_relatorio'),
     path('gerar_ar1/<int:pk>/', gerar_ar1, name='gerar_ar1'),
     path('gerar_ar2/<int:pk>/', gerar_ar2, name='gerar_ar2'),
+    path('gerar_ar3/<int:pk>/', gerar_ar3, name='gerar_ar3'),
+    path('gerar_ar4/<int:pk>/', gerar_ar4, name='gerar_ar4'),
     path('gerar_auto/<int:pk>/', gerar_auto, name='gerar_auto'),
     path('detalhe_estado/<int:pk>/', EstadoDetailView, name='detalhe_estado'),
     path('detalhe_estado/<int:pk>/', EstadoDetailView, name='detalhe_estado'),

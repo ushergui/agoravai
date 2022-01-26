@@ -47,7 +47,7 @@
 <p style="position:absolute;top:244px;left:49px;white-space:nowrap" class="ft04"><b>PROPRIETÁRIO:</b></p>
 <p style="position:absolute;top:247px;left:238px;white-space:nowrap" class="ft02">{{ infracao.inspecao.terreno.proprietario }}</p>
 <p style="position:absolute;top:265px;left:49px;white-space:nowrap" class="ft07"><b>ENDEREÇO DO IMÓVEL:</b></p>
-<p style="position:absolute;top:268px;left:238px;white-space:nowrap" class="ft02">{{ infracao.inspecao.terreno.logradouro_terreno.logradouro }}, {{ infracao.inspecao.terreno.numero_terreno }}{% if infracao.inspecao.terreno.complemento_terreno is None %}&#160;-&#160;{% else %}&#160;-&#160;{{ infracao.inspecao.terreno.complemento_terreno }}&#160;&#160;
+<p style="position:absolute;top:268px;left:238px;white-space:nowrap" class="ft02">{{ infracao.inspecao.terreno.logradouro_terreno.tipo }}&#160;{{ infracao.inspecao.terreno.logradouro_terreno.logradouro }}, {{ infracao.inspecao.terreno.numero_terreno }}{% if infracao.inspecao.terreno.complemento_terreno is None %}&#160;-&#160;{% else %}&#160;-&#160;{{ infracao.inspecao.terreno.complemento_terreno }}&#160;&#160;
 {% endif %}&#160;{{ infracao.inspecao.terreno.logradouro_terreno.bairro.bairro }}</p>
 <p style="position:absolute;top:286px;left:49px;white-space:nowrap" class="ft07"><b>INSCRIÇÃO&#160;CADASTRAL:</b></p>
 <p style="position:absolute;top:289px;left:252px;white-space:nowrap" class="ft02">{{ infracao.inspecao.terreno.inscricao }}</p>

@@ -94,7 +94,7 @@ class CidadeCreate(LoginRequiredMixin, CreateView):
 class BairroCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     model = Bairro
-    fields = ['bairro', 'cidade']
+    fields = ['nome_bairro', 'cidade']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-bairros')
     def get_context_data(self, *args, **kwargs):
@@ -107,7 +107,7 @@ class BairroCreate(LoginRequiredMixin, CreateView):
 class LogradouroCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login')
     model = Logradouro
-    fields = ['logradouro', 'bairro', 'cep']
+    fields = ['tipo','nome_logradouro', 'bairro', 'cep']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-logradouros')
     def get_context_data(self, *args, **kwargs):
@@ -240,14 +240,14 @@ class CidadeUpdate(LoginRequiredMixin, UpdateView):
 class BairroUpdate(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('login')
     model = Bairro
-    fields = ['bairro', 'cidade']
+    fields = ['nome_bairro', 'cidade']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-bairros')
 
 class LogradouroUpdate(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('login')
     model = Logradouro
-    fields = ['logradouro', 'bairro', 'cep']
+    fields = ['tipo','nome_logradouro', 'bairro', 'cep']
     template_name = 'form.html'
     success_url = reverse_lazy('listar-logradouros')
 
@@ -408,13 +408,25 @@ class BairroList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     model = Bairro
     template_name = 'listar-bairros.html'
-    ordering = ['bairro']
+    paginate_by = 10
+    ordering = ['nome_bairro']
+
+    def get_queryset(self):
+
+        txt_nome = self.request.GET.get('nome')
+
+        if txt_nome:
+            bairros = Bairro.objects.filter(nome_bairro__icontains=txt_nome)
+        else:
+            bairros = Bairro.objects.all()
+
+        return bairros
 
 class LogradouroList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     model = Logradouro
     template_name = 'listar-logradouros.html'
-    ordering = ['logradouro']
+    ordering = ['nome_logradouro']
 
 
 class ProprietarioList(LoginRequiredMixin, ListView):
@@ -479,6 +491,15 @@ def gerar_ar1(request,pk,template_name="gerar_ar1.html"):
 def gerar_ar2(request,pk,template_name="gerar_ar2.html"):
     infracao = get_object_or_404(Infracao, pk=pk)
     return render(request, template_name, {'infracao':infracao})
+
+def gerar_ar3(request,pk,template_name="gerar_ar3.html"):
+    infracao = get_object_or_404(Infracao, pk=pk)
+    return render(request, template_name, {'infracao':infracao})
+
+def gerar_ar4(request,pk,template_name="gerar_ar4.html"):
+    infracao = get_object_or_404(Infracao, pk=pk)
+    return render(request, template_name, {'infracao':infracao})
+
 
 def gerar_auto(request,pk,template_name="auto_infracao.html"):
     infracao = get_object_or_404(Infracao, pk=pk)

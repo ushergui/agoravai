@@ -52,17 +52,17 @@
 <p style="position:absolute;top:44px;left:608px;white-space:nowrap" class="ft02">&#160;DATA&#160;DE&#160;POSTAGEM</p>
 <p style="position:absolute;top:84px;left:608px;white-space:nowrap" class="ft02">&#160;UNIDADE&#160;DE&#160;POSTAGEM</p>
 <p style="position:absolute;top:87px;left:107px;white-space:nowrap" class="ft010">&#160;DESTINATÁRIO<br/>&#160;{{ infracao.inspecao.terreno.proprietario }}&#160;<br/>
-&#160;{{ infracao.inspecao.terreno.logradouro_correspondencia.tipo }}&#160;{{ infracao.inspecao.terreno.logradouro_correspondencia.logradouro }}, {{ infracao.inspecao.terreno.numero_correspondencia }}{% if infracao.inspecao.terreno.complemento_correspondencia is None %}
-,&#160;{% else %}&#160;-&#160;{{ infracao.inspecao.terreno.complemento_correspondencia }}&#160;&#160;
-{% endif %} <br/>&#160;{{ infracao.inspecao.terreno.logradouro_correspondencia.bairro.bairro }}&#160;-&#160;{{ infracao.inspecao.terreno.logradouro_correspondencia.cep }}</p>
+&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.tipo }}&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.logradouro }}, {{ infracao.inspecao.terreno.proprietario.numero_proprietario }}{% if infracao.inspecao.terreno.proprietario.complemento_proprietario is None %}
+&#160;{% else %}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.complemento_proprietario }}&#160;&#160;
+{% endif %} <br/>&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.bairro }}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.cep }}</p>
 <p style="position:absolute;top:132px;left:675px;white-space:nowrap" class="ft02">CARIMBO</p>
-<p style="position:absolute;top:146px;left:107px;white-space:nowrap" class="ft02">&#160;{{ infracao.inspecao.terreno.logradouro_correspondencia.bairro.cidade.nome_cidade }}&#160;-&#160;{{ infracao.inspecao.terreno.logradouro_correspondencia.bairro.cidade.estado }}</p>
+<p style="position:absolute;top:146px;left:107px;white-space:nowrap" class="ft02">&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.cidade.nome_cidade }}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.cidade.estado }}</p>
 <p style="position:absolute;top:146px;left:636px;white-space:nowrap" class="ft02">UNIDADE&#160;DE&#160;ENTREGA</p>
 <p style="position:absolute;top:178px;left:214px;white-space:nowrap" class="ft03">(CÓDIGO&#160;DE&#160;BARRAS&#160;OU&#160;Nº&#160;DE&#160;REGISTRO&#160;DO&#160;OBJETO)</p>
 <p style="position:absolute;top:206px;left:107px;white-space:nowrap" class="ft010">&#160;ENDEREÇO&#160;PARA&#160;DEVOLUÇÃO&#160;DO&#160;AR<br/>&#160;PREFEITURA&#160;DE&#160;SÃO&#160;SEBASTIÃO&#160;DO&#160;PARAÍSO<br/>&#160;DIVISÃO&#160;DE&#160;VIGILÂNCIA&#160;SANITÁRIA<br/>&#160;AVENIDA&#160;DR.&#160;PLACIDINO&#160;BRIGAGÃO,&#160;1230&#160;–&#160;CENTRO<br/>&#160;37950-000&#160;–&#160;SÃO&#160;SEBASTIÃO&#160;DO&#160;PARAÍSO&#160;–&#160;MG</p>
 <p style="position:absolute;top:297px;left:178px;white-space:nowrap" class="ft03">TENTATIVAS&#160;DE&#160;ENTREGA</p>
 <p style="position:absolute;top:296px;left:388px;white-space:nowrap" class="ft02">&#160;OBSERVAÇÃO</p>
-<p style="position:absolute;top:313px;left:388px;white-space:nowrap" class="ft02">&#160;Notificação do Auto de Infração {{ infracao.numero_format_ano }} - Limpeza de terreno</p>
+<p style="position:absolute;top:313px;left:388px;white-space:nowrap" class="ft02">&#160;</p>
 <p style="position:absolute;top:333px;left:107px;white-space:nowrap" class="ft03">&#160;1ª&#160;_______/_______/20_______&#160;&#160;&#160;&#160;&#160;________:________h</p>
 <p style="position:absolute;top:333px;left:432px;white-space:nowrap" class="ft03">MOTIVO&#160;DA&#160;DEVOLUÇÃO</p>
 <p style="position:absolute;top:333px;left:608px;white-space:nowrap" class="ft011">&#160;RUBRICA&#160;E&#160;MATRICULA&#160;DO&#160;<br/>&#160;CARTEIRO</p>
@@ -96,12 +96,12 @@
 <p style="position:absolute;top:43px;left:237px;white-space:nowrap" class="ft012">AVISO&#160;DE&#160;<br/>RECEBIMENTO</p>
 <p style="position:absolute;top:530px;left:58px;white-space:nowrap" class="ft08">&#160;</p>
 <p style="position:absolute;top:530px;left:64px;white-space:nowrap" class="ft09"><b>DESTINATÁRIO</b></p>
-<p style="position:absolute;top:578px;left:58px;white-space:nowrap" class="ft013">&#160;&#160;{{ infracao.inspecao.terreno.logradouro_correspondencia.tipo }}&#160;{{ infracao.inspecao.terreno.logradouro_correspondencia.logradouro }}, {{ infracao.inspecao.terreno.numero_correspondencia }}
-    {% if infracao.inspecao.terreno.complemento_correspondencia is None %}
-{% else %}&#160;-&#160;{{ infracao.inspecao.terreno.complemento_correspondencia }}&#160;&#160;
+<p style="position:absolute;top:578px;left:58px;white-space:nowrap" class="ft013">&#160;&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.tipo }}&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.logradouro }}, {{ infracao.inspecao.terreno.proprietario.numero_proprietario }}
+    {% if infracao.inspecao.terreno.proprietario.complemento_proprietario is None %}
+{% else %}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.complemento_proprietario }}&#160;&#160;
 {% endif %}<br/>
-    &#160;&#160;{{ infracao.inspecao.terreno.logradouro_correspondencia.bairro.bairro }}&#160;-&#160;{{ infracao.inspecao.terreno.logradouro_correspondencia.bairro.cidade.nome_cidade }}
-    &#160;&#160;<br/>&#160;&#160;{{ infracao.inspecao.terreno.logradouro_correspondencia.bairro.cidade.estado }} - {{ infracao.inspecao.terreno.logradouro_correspondencia.cep }}</p>
+    &#160;&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.bairro }}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.cidade.nome_cidade }}
+    &#160;&#160;<br/>&#160;&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.cidade.estado }} - {{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.cep }}</p>
 <p style="position:absolute;top:668px;left:58px;white-space:nowrap" class="ft08">&#160;</p>
 <p style="position:absolute;top:668px;left:64px;white-space:nowrap" class="ft09"><b>REMETENTE</b></p>
 <p style="position:absolute;top:716px;left:58px;white-space:nowrap" class="ft07">&#160;&#160;DIVISÃO&#160;DE&#160;VIGILÂNCIA&#160;SANITÁRIA&#160;</p>

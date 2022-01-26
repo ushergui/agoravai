@@ -34,30 +34,46 @@ class Cidade (models.Model):
         ordering = ["nome_cidade"]
 
 class Bairro (models.Model):
-    bairro=models.CharField(max_length=70, verbose_name="Bairro")
+    nome_bairro=models.CharField(max_length=70, verbose_name="Bairro")
     cidade=models.ForeignKey(Cidade, on_delete=models.PROTECT)
 
     def __str__(self):
-        return "{} - {}".format(self.bairro, self.cidade)
+        return "{} - {}".format(self.nome_bairro, self.cidade)
 
     def save(self, *args, **kwargs):
-        self.bairro = self.bairro.upper()
+        self.nome_bairro = self.nome_bairro.upper()
         super(Bairro, self).save(*args, **kwargs)
     class Meta:
-        ordering = ["bairro"]
+        ordering = ["nome_bairro"]
 
 
 class Logradouro (models.Model):
-    logradouro=models.CharField(max_length=80, verbose_name="Logradouro")
+
+    nome_logradouro=models.CharField(max_length=80, verbose_name="Logradouro")
+    TIPOS_CHOICES = (
+        ("RUA", "RUA"),
+        ("AVENIDA", "AVENIDA"),
+        ("PRAÇA", "PRAÇA"),
+        ("BECO", "BECO"),
+        ("ALAMEDA", "ALAMEDA"),
+        ("ESTRADA", "ESTRADA"),
+        ("LARGO", "LARGO"),
+        ("PASSARELA", "PASSARELA"),
+        ("RODOVIA", "RODOVIA"),
+        ("SETOR", "SETOR"),
+        ("TRAVESSA", "TRAVESSA"),
+        ("TREVO", "TREVO"),
+    )
+    tipo = models.CharField(max_length=22, null=False, choices=TIPOS_CHOICES)
     bairro=models.ForeignKey(Bairro, on_delete=models.PROTECT)
     cep = models.CharField(max_length=13, verbose_name="CEP")
     def __str__(self):
-        return "{} - {} - {}".format(self.logradouro, self.bairro, self.cep)
+        return "{} {} - {} - {}".format(self.tipo, self.nome_logradouro, self.bairro, self.cep)
     def save(self, *args, **kwargs):
-        self.logradouro = self.logradouro.upper()
+        self.nome_logradouro = self.nome_logradouro.upper()
         super(Logradouro, self).save(*args, **kwargs)
     class Meta:
-        ordering = ["logradouro"]
+        ordering = ["nome_logradouro"]
 
 class Proprietario(models.Model):
     nome_proprietario = models.CharField(max_length=55)
@@ -70,7 +86,6 @@ class Proprietario(models.Model):
     def save(self, *args, **kwargs):
         self.nome_proprietario = self.nome_proprietario.upper()
         self.numero_proprietario = self.numero_proprietario.upper()
-        self.complemento_proprietario = self.complemento_proprietario.upper()
         super(Proprietario, self).save(*args, **kwargs)
     class Meta:
         ordering = ["nome_proprietario"]
@@ -386,7 +401,11 @@ class Infracao(models.Model):
             self.numero = self.get_sequencial()
         if self.numero_format_ano is None:
             self.numero_format_ano = self.numero_formatado
+
+        if self.rastreio_infracao is not None:
+            self.rastreio_infracao.upper()
         super(Infracao, self).save(*args, **kwargs)
+
 
 
     def __str__(self):

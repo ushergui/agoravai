@@ -52,8 +52,8 @@
 <p style="position:absolute;top:44px;left:608px;white-space:nowrap" class="ft02">&#160;DATA&#160;DE&#160;POSTAGEM</p>
 <p style="position:absolute;top:84px;left:608px;white-space:nowrap" class="ft02">&#160;UNIDADE&#160;DE&#160;POSTAGEM</p>
 <p style="position:absolute;top:87px;left:107px;white-space:nowrap" class="ft010">&#160;DESTINATÁRIO<br/>&#160;{{ infracao.inspecao.terreno.proprietario }}&#160;<br/>
-&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.logradouro }}, {{ infracao.inspecao.terreno.proprietario.numero_proprietario }}{% if infracao.inspecao.terreno.proprietario.complemento_proprietario is None %}
-,&#160;{% else %}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.complemento_proprietario }}&#160;&#160;
+&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.tipo }}&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.logradouro }}, {{ infracao.inspecao.terreno.proprietario.numero_proprietario }}{% if infracao.inspecao.terreno.proprietario.complemento_proprietario is None %}
+&#160;{% else %}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.complemento_proprietario }}&#160;&#160;
 {% endif %} <br/>&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.bairro }}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.cep }}</p>
 <p style="position:absolute;top:132px;left:675px;white-space:nowrap" class="ft02">CARIMBO</p>
 <p style="position:absolute;top:146px;left:107px;white-space:nowrap" class="ft02">&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.cidade.nome_cidade }}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.cidade.estado }}</p>
@@ -96,9 +96,9 @@
 <p style="position:absolute;top:43px;left:237px;white-space:nowrap" class="ft012">AVISO&#160;DE&#160;<br/>RECEBIMENTO</p>
 <p style="position:absolute;top:530px;left:58px;white-space:nowrap" class="ft08">&#160;</p>
 <p style="position:absolute;top:530px;left:64px;white-space:nowrap" class="ft09"><b>DESTINATÁRIO</b></p>
-<p style="position:absolute;top:578px;left:58px;white-space:nowrap" class="ft013">&#160;&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.logradouro }}, {{ infracao.inspecao.terreno.proprietario.numero_proprietario }}
+<p style="position:absolute;top:578px;left:58px;white-space:nowrap" class="ft013">&#160;&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.tipo }}&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.logradouro }}, {{ infracao.inspecao.terreno.proprietario.numero_proprietario }}
     {% if infracao.inspecao.terreno.proprietario.complemento_proprietario is None %}
-,{% else %}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.complemento_proprietario }}&#160;&#160;
+{% else %}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.complemento_proprietario }}&#160;&#160;
 {% endif %}<br/>
     &#160;&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.bairro }}&#160;-&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.cidade.nome_cidade }}
     &#160;&#160;<br/>&#160;&#160;{{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.bairro.cidade.estado }} - {{ infracao.inspecao.terreno.proprietario.logradouro_proprietario.cep }}</p>
