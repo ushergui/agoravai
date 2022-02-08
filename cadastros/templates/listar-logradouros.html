@@ -3,10 +3,10 @@
 {% load static %}
 
 {% block conteudo %}
-<h3>Lista de logradouros</h3>
+<h3>Lista de logradouros
 
-<a href="{% url 'cadastrar-logradouro' %}" class="btn btn-primary btn-sm">Adicionar logradrouro</a>
-
+<a href="{% url 'cadastrar-logradouro' %}" class="btn btn-primary btn-sm float-right">Adicionar logradrouro</a>
+</h3>
 <hr>
 <div class="table responsive">
 <table class="table table-striped" id="tabela-listar">
@@ -25,7 +25,7 @@
     <tr>
         <td>{{ logradouro.tipo }}</td>
         <td>{{ logradouro.nome_logradouro }}</td>
-        <td>{{ logradouro.bairro.bairro }}</td>
+        <td>{{ logradouro.bairro.nome_bairro }}</td>
         <td>{{ logradouro.cep }}</td>
         <td>
             <a href="{% url 'editar-logradouro' logradouro.pk %}" class="btn btn-warning btn-sm" title="Editar">

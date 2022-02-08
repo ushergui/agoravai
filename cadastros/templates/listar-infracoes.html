@@ -3,13 +3,14 @@
 {% load static %}
 
 {% block conteudo %}
-<h3>Lista dos autos de infração</h3>
+<h3>Lista dos autos de infração
 
-<a href="{% url 'cadastrar-infracao' %}" class="btn btn-primary btn-sm">Adicionar auto de infração</a>
-
+<a href="{% url 'cadastrar-infracao' %}" class="btn btn-primary btn-sm float-right">Adicionar auto de infração</a>
+</h3>
 <hr>
-
-<table class="table table-striped table-hover table-condensed">
+<div class="table responsive">
+<table class="table table-striped table-hover table-condensed" id="tabela-listar">
+    <thead>
     <tr>
         <th>Número</th>
         <th>Imprimir</th>
@@ -25,6 +26,8 @@
         <th>Opções</th>
 
     </tr>
+    </thead>
+    <tbody>
     {% for infracao in object_list %}
     <tr>
         <td>{{ infracao.numero_format_ano }}</td>
@@ -78,7 +81,50 @@
             <td colspan="3">Nenhum campo registrado.</td>
         </tr>
     {% endfor %}
-
+</tbody>
 </table>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+
+
+    $(document).ready(function(){
+
+        $("#tabela-listar").DataTable({
+            responsive: true,
+            // "bSort": false,
+            "aaSorting": [],
+            "pageLength": 50,
+            "language": {
+                "decimal": "",
+                "emptyTable": "Sem dados disponíveis",
+                "info": "Mostrando de _START_ até _END_ de _TOTAL_ registos",
+                "infoEmpty": "Mostrando de 0 até 0 de 0 registos",
+                "infoFiltered": "(filtrado de _MAX_ registos no total)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ registos",
+                "loadingRecords": "A carregar dados...",
+                "processing": "A processar...",
+                "search": "Procurar:",
+                "zeroRecords": "Não foram encontrados resultados",
+                "paginate": {
+                    "first": "Primeiro",
+                    "last": "Último",
+                    "next": "Seguinte",
+                    "previous": "Anterior"
+                },
+                "aria": {
+                    "sortAscending": ": ordem crescente",
+                    "sortDescending": ": ordem decrescente"
+                }
+            }
+        });
+
+    });
+
+</script>
 
 {% endblock %}

@@ -3,23 +3,26 @@
 {% load static %}
 
 {% block conteudo %}
-<h3>Lista de proprietários</h3>
+<h3>Lista de proprietários
 
-<a href="{% url 'cadastrar-proprietario' %}" class="btn btn-primary btn-sm">Adicionar proprietário</a>
-
+<a href="{% url 'cadastrar-proprietario' %}" class="btn btn-primary btn-sm float-right">Adicionar proprietário</a>
+</h3>
 <hr>
 <div class="table responsive">
-<table class="table table-striped">
+<table class="table table-striped" id="tabela-listar">
+    <thead>
     <tr>
         <th>Proprietário</th>
         <th>Logradouro</th>
         <th>Opções</th>
 
     </tr>
+    </thead>
+    <tbody>
     {% for proprietario in object_list %}
     <tr>
         <td>{{ proprietario.nome_proprietario }}</td>
-        <td>{{ proprietario.logradouro_proprietario.logradouro }}, {{proprietario.numero_proprietario}} {{ proprietario.logradouro_proprietario.complemento}} - {{ proprietario.logradouro_proprietario.bairro.bairro }}</td>
+        <td>{{ proprietario.logradouro_proprietario.nome_logradouro }}, {{proprietario.numero_proprietario}} {{ proprietario.logradouro_proprietario.complemento}} - {{ proprietario.logradouro_proprietario.bairro.nome_bairro }}</td>
         <td>
             <a href="{% url 'editar-proprietario' proprietario.pk %}" class="btn btn-warning btn-sm" title="Editar">
             Editar
@@ -34,8 +37,51 @@
             <td colspan="3">Nenhum campo registrado.</td>
         </tr>
     {% endfor %}
+    </tbody>
 
 </table>
 
 </div>
+{% endblock %}
+{% block scripts %}
+<script>
+
+
+    $(document).ready(function(){
+
+        $("#tabela-listar").DataTable({
+            responsive: true,
+            // "bSort": false,
+            "aaSorting": [],
+            "pageLength": 50,
+            "language": {
+                "decimal": "",
+                "emptyTable": "Sem dados disponíveis",
+                "info": "Mostrando de _START_ até _END_ de _TOTAL_ registos",
+                "infoEmpty": "Mostrando de 0 até 0 de 0 registos",
+                "infoFiltered": "(filtrado de _MAX_ registos no total)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ registos",
+                "loadingRecords": "A carregar dados...",
+                "processing": "A processar...",
+                "search": "Procurar:",
+                "zeroRecords": "Não foram encontrados resultados",
+                "paginate": {
+                    "first": "Primeiro",
+                    "last": "Último",
+                    "next": "Seguinte",
+                    "previous": "Anterior"
+                },
+                "aria": {
+                    "sortAscending": ": ordem crescente",
+                    "sortDescending": ": ordem decrescente"
+                }
+            }
+        });
+
+    });
+
+</script>
+
 {% endblock %}

@@ -3,8 +3,19 @@
 {% load static %}
 
 {% block conteudo %}
-<h3>Lista de cidades</h3>
-<a href="{% url 'cadastrar-cidade' %}" class="btn btn-primary btn-sm">Adicionar cidade</a>
+<h3>Lista de cidades
+<a href="{% url 'cadastrar-cidade' %}" class="btn btn-primary btn-sm float-right">Adicionar cidade</a>
+</h3>
+<hr>
+<form action="?" method="GET">
+
+    <input type="text" name="nome" id="" value="{{ request.GET.nome }}" class="p-1 border" autocomplete="off" placeholder="Nome ou parte dele">
+
+    <button type="submit" class="btn btn-success">Buscar</button>
+
+    <a href="{% url 'listar-estados' %}" class="btn btn-light">Limpar</a>
+
+</form>
 <hr>
 <div class="table responsive">
 <table class="table table-striped">

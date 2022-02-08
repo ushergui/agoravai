@@ -79,7 +79,7 @@ urlpatterns = [
     path('gerar_ar4/<int:pk>/', gerar_ar4, name='gerar_ar4'),
     path('gerar_auto/<int:pk>/', gerar_auto, name='gerar_auto'),
     path('detalhe_estado/<int:pk>/', EstadoDetailView, name='detalhe_estado'),
-    path('detalhe_estado/<int:pk>/', EstadoDetailView, name='detalhe_estado'),
+
 
 
 ]

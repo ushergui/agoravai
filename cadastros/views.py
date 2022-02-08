@@ -1,3 +1,4 @@
+from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView,  BaseDetailView
 from django.views.generic.list import ListView
 
@@ -508,4 +509,6 @@ def gerar_auto(request,pk,template_name="auto_infracao.html"):
 def EstadoDetailView(request, pk):
     estado = get_object_or_404(Estado, pk=pk)
     return render(request, 'estado_detalhe.html', context={'estado': estado})
+
+
 
