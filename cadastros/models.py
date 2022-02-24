@@ -1,16 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
-#Pra deixar cada um ver somente aquilo que cadastrou, exemplo pra usar: Produtividade
+from django.db.models import Sum
+
+
+# Pra deixar cada um ver somente aquilo que cadastrou, exemplo pra usar: Produtividade
 
 # Create your models here.
 
-class Estado (models.Model):
-    nome_estado=models.CharField(max_length=25, verbose_name="Estado")
-    sigla_estado=models.CharField(max_length=2, verbose_name="Sigla do Estado")
-    #Anotação padrão para informar que é string
+class Estado(models.Model):
+    nome_estado = models.CharField(max_length=25, verbose_name="Estado")
+    sigla_estado = models.CharField(max_length=2, verbose_name="Sigla do Estado")
+
+    # Anotação padrão para informar que é string
 
     def __str__(self):
         return self.nome_estado
+
     class Meta:
         ordering = ['nome_estado']
 
@@ -20,9 +25,9 @@ class Estado (models.Model):
         super(Estado, self).save(*args, **kwargs)
 
 
-class Cidade (models.Model):
-    nome_cidade=models.CharField(max_length=80, verbose_name="Cidade")
-    estado=models.ForeignKey(Estado, on_delete=models.PROTECT)
+class Cidade(models.Model):
+    nome_cidade = models.CharField(max_length=80, verbose_name="Cidade")
+    estado = models.ForeignKey(Estado, on_delete=models.PROTECT)
 
     def __str__(self):
         return "{} - {}".format(self.nome_cidade, self.estado)
@@ -30,12 +35,14 @@ class Cidade (models.Model):
     def save(self, *args, **kwargs):
         self.nome_cidade = self.nome_cidade.upper()
         super(Cidade, self).save(*args, **kwargs)
+
     class Meta:
         ordering = ["nome_cidade"]
 
-class Bairro (models.Model):
-    nome_bairro=models.CharField(max_length=70, verbose_name="Bairro")
-    cidade=models.ForeignKey(Cidade, on_delete=models.PROTECT)
+
+class Bairro(models.Model):
+    nome_bairro = models.CharField(max_length=70, verbose_name="Bairro")
+    cidade = models.ForeignKey(Cidade, on_delete=models.PROTECT)
 
     def __str__(self):
         return "{} - {}".format(self.nome_bairro, self.cidade)
@@ -43,13 +50,13 @@ class Bairro (models.Model):
     def save(self, *args, **kwargs):
         self.nome_bairro = self.nome_bairro.upper()
         super(Bairro, self).save(*args, **kwargs)
+
     class Meta:
         ordering = ["nome_bairro"]
 
 
-class Logradouro (models.Model):
-
-    nome_logradouro=models.CharField(max_length=80, verbose_name="Logradouro")
+class Logradouro(models.Model):
+    nome_logradouro = models.CharField(max_length=80, verbose_name="Logradouro")
     TIPOS_CHOICES = (
         ("RUA", "RUA"),
         ("AVENIDA", "AVENIDA"),
@@ -65,21 +72,26 @@ class Logradouro (models.Model):
         ("TREVO", "TREVO"),
     )
     tipo = models.CharField(max_length=22, null=False, choices=TIPOS_CHOICES)
-    bairro=models.ForeignKey(Bairro, on_delete=models.PROTECT)
+    bairro = models.ForeignKey(Bairro, on_delete=models.PROTECT)
     cep = models.CharField(max_length=13, verbose_name="CEP")
+
     def __str__(self):
         return "{} {} - {} - {}".format(self.tipo, self.nome_logradouro, self.bairro, self.cep)
+
     def save(self, *args, **kwargs):
         self.nome_logradouro = self.nome_logradouro.upper()
         super(Logradouro, self).save(*args, **kwargs)
+
     class Meta:
         ordering = ["nome_logradouro"]
+
 
 class Proprietario(models.Model):
     nome_proprietario = models.CharField(max_length=55)
     logradouro_proprietario = models.ForeignKey(Logradouro, on_delete=models.PROTECT)
-    numero_proprietario=models.CharField(max_length=20, verbose_name="Número", null=True)
-    complemento_proprietario=models.CharField(max_length=40, verbose_name="Complemento", null=True, blank=True)
+    numero_proprietario = models.CharField(max_length=20, verbose_name="Número", null=True)
+    complemento_proprietario = models.CharField(max_length=40, verbose_name="Complemento", null=True, blank=True)
+
     def __str__(self):
         return self.nome_proprietario
 
@@ -87,6 +99,7 @@ class Proprietario(models.Model):
         self.nome_proprietario = self.nome_proprietario.upper()
         self.numero_proprietario = self.numero_proprietario.upper()
         super(Proprietario, self).save(*args, **kwargs)
+
     class Meta:
         ordering = ["nome_proprietario"]
 
@@ -98,14 +111,17 @@ class Proprietario(models.Model):
 
 class Terreno(models.Model):
     inscricao = models.CharField(max_length=18, null=False, verbose_name="Inscrição imobiliária")
-    logradouro_terreno = models.ForeignKey(Logradouro, on_delete=models.PROTECT, verbose_name="Logradouro do terreno", related_name="logradouro_terreno")
+    logradouro_terreno = models.ForeignKey(Logradouro, on_delete=models.PROTECT, verbose_name="Logradouro do terreno",
+                                           related_name="logradouro_terreno")
     numero_terreno = models.CharField(max_length=20, verbose_name="Número do terreno")
     complemento_terreno = models.CharField(max_length=40, verbose_name="Complemento", null=True, blank=True)
     proprietario = models.ForeignKey(Proprietario, on_delete=models.PROTECT, verbose_name="Proprietário")
     lote = models.CharField(max_length=4, null=False)
     quadra = models.CharField(max_length=4, null=False)
     area = models.FloatField(null=False)
-    logradouro_correspondencia = models.ForeignKey(Logradouro, on_delete=models.PROTECT, verbose_name="Endereço de correspondência", related_name="logradouro_correspondencia")
+    logradouro_correspondencia = models.ForeignKey(Logradouro, on_delete=models.PROTECT,
+                                                   verbose_name="Endereço de correspondência",
+                                                   related_name="logradouro_correspondencia")
     numero_correspondencia = models.CharField(max_length=20, verbose_name="Número")
     complemento_correspondencia = models.CharField(max_length=40, verbose_name="Complemento", null=True, blank=True)
     TIPO_CHOICES = (
@@ -119,7 +135,6 @@ class Terreno(models.Model):
         if self.terreno.complemento_terreno is not None:
             return self.terreno.complemento_terreno
 
-
     def save(self, *args, **kwargs):
         self.numero_terreno = self.numero_terreno.upper()
         self.lote = self.lote.upper()
@@ -129,13 +144,15 @@ class Terreno(models.Model):
 
     def __str__(self):
         return "{} - {}".format(self.inscricao, self.proprietario)
+
     class Meta:
         ordering = ["inscricao"]
 
-    #class Produtividade(models.Model):
-        #descricao = models.CharField(max_length=280, null=False, verbose_name="Descrição")
-       # usuario = models.ForeignKey(User, on_delete=models.PROTECT)
-       # pdf_teste = models.FileField(upload_to='pdf/')
+    # class Produtividade(models.Model):
+    # descricao = models.CharField(max_length=280, null=False, verbose_name="Descrição")
+    # usuario = models.ForeignKey(User, on_delete=models.PROTECT)
+    # pdf_teste = models.FileField(upload_to='pdf/')
+
 
 class Protocolo(models.Model):
     protocolo = models.CharField(max_length=12, null=False)
@@ -160,15 +177,16 @@ class Protocolo(models.Model):
         ("PRAZO DE DEFESA AR", "PRAZO DE DEFESA AR"),
         ("PRAZO DE DEFESA EDITAL", "PRAZO DE DEFESA EDITAL"),
         ("PRAZO PARA JULGAMENTO AR", "PRAZO PARA JULGAMENTO AR"),
-        ("PRAZO DE JULGAMENTO EDITAL", "PRAZO DE JULGAMENTO EDITAL"),
-
+        ("PRAZO DE JULGAMENTO EDITAL", "PRAZO DE JULGAMENTO EDITAL")
     )
     ouvidoria = models.CharField(max_length=10, null=True, blank=True)
     status_protocolo = models.CharField(max_length=26, null=False, choices=STATUS_CHOICES)
     entrada_protocolo = models.DateField(null=False)
     encerramento_protocolo = models.DateField(null=True, blank=True)
+
     class Meta:
         ordering = ["protocolo"]
+
     @property
     def ouvidorias(self):
         if self.ouvidoria is not None:
@@ -186,7 +204,6 @@ class Protocolo(models.Model):
         super(Protocolo, self).save(*args, **kwargs)
 
 
-
 class Fiscal(models.Model):
     nome_fiscal = models.CharField(max_length=36, null=False)
 
@@ -199,6 +216,7 @@ class Fiscal(models.Model):
     nivel = models.CharField(max_length=19, null=False, choices=NIVEL_CHOICES)
 
     primeiro_nome = models.CharField(max_length=16, null=False)
+
     class Meta:
         ordering = ["nome_fiscal"]
 
@@ -210,7 +228,6 @@ class Fiscal(models.Model):
         self.primeiro_nome = self.primeiro_nome.upper()
 
         super(Fiscal, self).save(*args, **kwargs)
-
 
 
 class Inspecao(models.Model):
@@ -242,7 +259,8 @@ class Inspecao(models.Model):
         ("", "NÃO"),
         ("X", "SIM"),
     )
-    material = models.CharField(max_length=1, null=True, blank=True, choices=MATERIAL_CHOICES, verbose_name="Material(is)")
+    material = models.CharField(max_length=1, null=True, blank=True, choices=MATERIAL_CHOICES,
+                                verbose_name="Material(is)")
 
     LIXO_CHOICES = (
         ("", "NÃO"),
@@ -270,17 +288,14 @@ class Inspecao(models.Model):
 
     terreno = models.ForeignKey('Terreno', on_delete=models.CASCADE, null=False)
 
-
     def __str__(self):
         data_inspecao1_formated = self.data_inspecao1.strftime("%d/%m/%Y")
         return "{} - {}, {}".format(self.protocolo, self.terreno, data_inspecao1_formated)
-
 
     @property
     def complemento(self):
         if self.terreno.complemento_terreno is not None:
             return self.terreno.complemento_terreno
-
 
     def lixos(self):
         if self.lixo is not None:
@@ -311,6 +326,7 @@ class Inspecao(models.Model):
             return self.carcaca
         else:
             return " "
+
     def pneus(self):
         if self.pneu is not None:
             return self.pneu
@@ -339,8 +355,6 @@ class Inspecao(models.Model):
 class Infracao(models.Model):
     inspecao = models.ForeignKey(Inspecao, on_delete=models.CASCADE)
 
-
-
     rastreio_infracao = models.CharField(max_length=13, null=True, blank=True, verbose_name="Código de rastreio")
     STATUS_RASTREIO_CHOICES = (
         ("NÃO ENVIADO AINDA", "NÃO ENVIADO AINDA"),
@@ -357,7 +371,8 @@ class Infracao(models.Model):
         ("FALECIDO", "FALECIDO"),
     )
 
-    status_rastreio = models.CharField(null=True, max_length=22, blank=True, choices=STATUS_RASTREIO_CHOICES, verbose_name="Status devolução Correios")
+    status_rastreio = models.CharField(null=True, max_length=22, blank=True, choices=STATUS_RASTREIO_CHOICES,
+                                       verbose_name="Status devolução Correios")
 
     data_entrega_autuacao = models.DateField(null=True, blank=True, verbose_name="Data da entrega do Auto de infração")
     DEFENDEU_CHOICES = (
@@ -365,19 +380,22 @@ class Infracao(models.Model):
         ("SIM", "SIM"),
         ("NÃO", "NÃO"),
     )
-    nome_recebedor = models.CharField( blank=True,max_length=60, null=True, verbose_name="Quem recebeu?")
+    nome_recebedor = models.CharField(blank=True, max_length=60, null=True, verbose_name="Quem recebeu?")
     defendeu = models.CharField(max_length=15, null=False, choices=DEFENDEU_CHOICES, verbose_name="Apresentou defesa?")
 
     numero = models.PositiveSmallIntegerField(null=True, blank=True)
     numero_format_ano = models.CharField(max_length=9, null=True, blank=True)
     data_auto = models.DateField(verbose_name='Data do Auto', null=True, blank=True)
 
-
     def vrm(self):
         vrm = self.inspecao.terreno.area * 2.1972
-        return str(f'{round(vrm, 2):.2f}'.replace('.',','))
+        return str(f'{round(vrm, 2):.2f}'.replace('.', ','))
 
-
+ #   @property
+  #  def teste(self):
+   #     teste = self.infracao.objects.all().aggregate(self.inspecao.terreno.area(
+    #        Sum('self.inspecao.terreno.area')))
+     #   return teste or 0
 
     def get_sequencial(self):
         data = self.data_auto
@@ -388,13 +406,12 @@ class Infracao(models.Model):
             return infracao.numero + 1
         else:
             return 1
+
     @property
     def numero_formatado(self):
         data = self.data_auto
         ano = data.year
         return f'{str(self.numero).zfill(4)}/{str(ano)}'
-
-
 
     def save(self, *args, **kwargs):
         if self.numero is None or self.numero == '':
@@ -406,10 +423,24 @@ class Infracao(models.Model):
             self.rastreio_infracao.upper()
         super(Infracao, self).save(*args, **kwargs)
 
-
-
     def __str__(self):
         return f'{self.numero_formatado}'
+
+class Defesa(models.Model):
+    infracao = models.ForeignKey(Infracao, on_delete=models.CASCADE)
+    protocolo = models.CharField(max_length=12, null=False)
+    entrada_protocolo = models.DateField(null=False, verbose_name="Data de entrada")
+    GRAU_CHOICES = (
+        ("PROPRIO", "PROPRIO"),
+        ("CORRESPONSAVEL", "CORRESPONSAVEL"),
+        ("OUTROS", "OUTROS")
+    )
+    quem = models.CharField(max_length=100, verbose_name="Nome")
+    grau = models.CharField(max_length=50, verbose_name="Grau de relação", choices=GRAU_CHOICES)
+
+
+
+
 
 """ def get_sequencial(self):
     tipo = self.tipo
@@ -433,11 +464,3 @@ class Infracao(models.Model):
     self.numero_format_ano = self.numero_formatado
     super(ContratoCompra, self).save(*args, **kwargs)
 """
-
-
-
-
-
-
-
-

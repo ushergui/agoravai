@@ -10,7 +10,7 @@ from .views import EstadoUpdate, CidadeUpdate, BairroUpdate, LogradouroUpdate, \
 from .views import EstadoDelete, CidadeDelete, BairroDelete, LogradouroDelete, \
     ProprietarioDelete, TerrenoDelete, ProtocoloDelete, FiscalDelete, InspecaoDelete, InfracaoDelete
 from .views import EstadoList, CidadeList, BairroList, LogradouroList, \
-    ProprietarioList, TerrenoList, ProtocoloList, FiscalList, InspecaoList, InfracaoList
+    ProprietarioList, TerrenoList, ProtocoloList, FiscalList, InspecaoList, InfracaoList, InfracaoList2
 from .views import gerar_relatorio, EstadoDetailView, gerar_ar1, gerar_ar2, gerar_auto, gerar_ar3, gerar_ar4
 
 from . import views
@@ -70,6 +70,7 @@ urlpatterns = [
     path('listar-fiscais/', FiscalList.as_view(), name="listar-fiscais"),
     path('listar-inspecoes/', InspecaoList.as_view(), name="listar-inspecoes"),
     path('listar-infracoes/', InfracaoList.as_view(), name="listar-infracoes"),
+    path('gerenciar-infracoes/', InfracaoList2.as_view(), name="gerenciar-infracoes"),
 
     # Para gerar
     path('gerar_relatorio/<int:pk>/', gerar_relatorio, name='gerar_relatorio'),

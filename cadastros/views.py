@@ -1,6 +1,7 @@
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView,  BaseDetailView
 from django.views.generic.list import ListView
+from django.db.models import Sum
 
 
 from .models import Estado, Cidade, Bairro, Logradouro, Proprietario, Terreno, Protocolo, Infracao, Inspecao, Fiscal #Produtividade
@@ -367,7 +368,7 @@ class InspecaoDelete(LoginRequiredMixin, DeleteView):
 
 class InfracaoDelete(LoginRequiredMixin, DeleteView):
     login_url = reverse_lazy('login')
-    model = Inspecao
+    model = Infracao
     template_name = 'form-excluir.html'
     success_url = reverse_lazy('listar-infracoes')
 
@@ -463,6 +464,11 @@ class InfracaoList(LoginRequiredMixin, ListView):
     model = Infracao
     template_name = 'listar-infracoes.html'
 
+class InfracaoList2(LoginRequiredMixin, ListView):
+    login_url = reverse_lazy('login')
+    model = Infracao
+    template_name = 'gerenciar-infracoes.html'
+
 
 
 #pra fazer uma lista onde
@@ -509,6 +515,7 @@ def gerar_auto(request,pk,template_name="auto_infracao.html"):
 def EstadoDetailView(request, pk):
     estado = get_object_or_404(Estado, pk=pk)
     return render(request, 'estado_detalhe.html', context={'estado': estado})
+
 
 
 

@@ -3,22 +3,24 @@
 {% load static %}
 
 {% block conteudo %}
-<h3>Lista dos autos de infração
-
-<a href="{% url 'cadastrar-infracao' %}" class="btn btn-primary btn-sm float-right">Adicionar auto de infração</a>
+<h3>Controle dos autos de infração
 </h3>
 
 <hr>
 <div class="table responsive">
 <table class="table table-striped table-hover table-condensed" id="tabela-listar">
     <thead>
-     <tr>
-        <th class="text-center">Número</th>
-        <th class="text-center">Imprimir</th>
-        <th class="text-center">AR</th>
+    <tr>
+        <th class="text-center">Auto</th>
         <th class="text-center">Protocolo</th>
-        <th class="text-center">Imóvel</th>
-        <th class="text-center">Opções</th>
+        <th class="text-center">Imóvel / Endereço / Proprietário</th>
+        <th class="text-center">Rastreio</th>
+        <th class="text-center">Status</th>
+        <th class="text-center">Entrega</th>
+        <th class="text-center">Prazo</th>
+        <th class="text-center">Defesa</th>
+        <th class="text-center">Manifesto</th>
+        <th class="text-center">Julgamento</th>
 
     </tr>
     </thead>
@@ -26,48 +28,19 @@
     {% for infracao in object_list %}
     <tr>
         <td class="text-center">{{ infracao.numero_format_ano }}</td>
-        <td class="text-center">
-        <a href="{% url 'gerar_auto' pk=infracao.pk %}">
-          <i class="fa fa-file" aria-hidden="true"></i>
-        </a>
-        </td>
-        <td class="text-center">
-
-
-        <a href="{% url 'gerar_ar1' pk=infracao.pk %}">
-          <i class="fa fa-envelope" aria-hidden="true"></i>
-        </a>
-
-
-
-        <a href="{% url 'gerar_ar2' pk=infracao.pk %}">
-          <i class="fa fa-envelope" aria-hidden="true"></i>
-        </a>
-
-
-
-        <a href="{% url 'gerar_ar3' pk=infracao.pk %}">
-          <i class="fa fa-envelope" aria-hidden="true"></i>
-        </a>
-
-
-
-        <a href="{% url 'gerar_ar4' pk=infracao.pk %}">
-          <i class="fa fa-envelope" aria-hidden="true"></i>
-        </a>
-        </td>
-
         <td class="text-center">{{ infracao.inspecao.protocolo }}</td>
-        <td class="text-center">{{ infracao.inspecao.terreno.inscricao }} - {{ infracao.inspecao.terreno.logradouro_terreno.tipo }} {{ infracao.inspecao.terreno.logradouro_terreno.nome_logradouro }}</td>
+        <td class="text-center">{{ infracao.inspecao.terreno.inscricao }} / {{ infracao.inspecao.terreno.proprietario }} / {{ infracao.inspecao.terreno.logradouro_terreno.tipo }} {{ infracao.inspecao.terreno.logradouro_terreno.nome_logradouro }}</td>
+        <td class="text-center">{{ infracao.rastreio_infracao }}</td>
+        <td class="text-center">{{ infracao.status_rastreio }}</td>
+        <td class="text-center">{{ infracao.data_entrega_autuacao|date:"d/m/Y" }}</td>
+        <td class="text-center">{{ infracao.prazo|date:"d/m/Y" }}</td>
+        <td class="text-center">{{ infracao.defesa|date:"d/m/Y" }}</td>
+        <td class="text-center"></td>
+        <td class="text-center"></td>
 
-        <td class="text-center">
-            <a href="{% url 'editar-infracao' infracao.pk %}" >
-            <i class="fa fa-pencil" aria-hidden="true"></i>
-            </a>
-            <a href="{% url 'deletar-infracao' infracao.pk %}" >
-            <i class="fa fa-trash" aria-hidden="true"></i>
-            </a>
-        </td>
+
+
+
     </tr>
     {% empty %}
         <tr>
